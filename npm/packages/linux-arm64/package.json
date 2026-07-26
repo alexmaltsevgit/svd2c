@@ -1,14 +1,18 @@
 {
   "name": "svd2c-linux-arm64",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Linux arm64 native binary for svd2c",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alexmaltsevgit/svd2c.git"
   },
-  "os": ["linux"],
-  "cpu": ["arm64"],
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "arm64"
+  ],
   "files": [
     "bin"
   ]
