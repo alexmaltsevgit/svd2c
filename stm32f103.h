@@ -51,6 +51,7 @@ typedef struct {
           4
     */
     volatile uint32_t BTR4;
+    volatile uint32_t __RESERVED0[16];
     /**
     * PC Card/NAND Flash control register
           2
@@ -71,10 +72,12 @@ typedef struct {
           2
     */
     volatile uint32_t PATT2;
+    volatile uint32_t __RESERVED1;
     /**
     * ECC result register 2
     */
     volatile uint32_t ECCR2;
+    volatile uint32_t __RESERVED2[2];
     /**
     * PC Card/NAND Flash control register
           3
@@ -95,10 +98,12 @@ typedef struct {
           3
     */
     volatile uint32_t PATT3;
+    volatile uint32_t __RESERVED3;
     /**
     * ECC result register 3
     */
     volatile uint32_t ECCR3;
+    volatile uint32_t __RESERVED4[2];
     /**
     * PC Card/NAND Flash control register
           4
@@ -123,28 +128,32 @@ typedef struct {
     * I/O space timing register 4
     */
     volatile uint32_t PIO4;
+    volatile uint32_t __RESERVED5[20];
     /**
     * SRAM/NOR-Flash write timing registers
           1
     */
     volatile uint32_t BWTR1;
+    volatile uint32_t __RESERVED6;
     /**
     * SRAM/NOR-Flash write timing registers
           2
     */
     volatile uint32_t BWTR2;
+    volatile uint32_t __RESERVED7;
     /**
     * SRAM/NOR-Flash write timing registers
           3
     */
     volatile uint32_t BWTR3;
+    volatile uint32_t __RESERVED8;
     /**
     * SRAM/NOR-Flash write timing registers
           4
     */
     volatile uint32_t BWTR4;
 
-} FSMC_Typedef;
+} FSMC_TypeDef;
 
 #define FSMC_BASE            (0xA0000000)
 #define FSMC                 ((FSMC_TypeDef*)FSMC_BASE)
@@ -164,7 +173,7 @@ typedef struct {
     */
     volatile uint32_t CSR;
 
-} PWR_Typedef;
+} PWR_TypeDef;
 
 #define PWR_BASE            (0x40007000)
 #define PWR                 ((PWR_TypeDef*)PWR_BASE)
@@ -223,7 +232,7 @@ typedef struct {
     */
     volatile uint32_t CSR;
 
-} RCC_Typedef;
+} RCC_TypeDef;
 
 #define RCC_BASE            (0x40021000)
 #define RCC                 ((RCC_TypeDef*)RCC_BASE)
@@ -268,7 +277,7 @@ typedef struct {
     */
     volatile uint32_t LCKR;
 
-} GPIO_Typedef;
+} GPIO_TypeDef;
 
 #define GPIOA_BASE            (0x40010800)
 #define GPIOA                 ((GPIO_TypeDef*)GPIOA_BASE)
@@ -325,13 +334,14 @@ typedef struct {
           (AFIO_EXTICR4)
     */
     volatile uint32_t EXTICR4;
+    volatile uint32_t __RESERVED0;
     /**
     * AF remap and debug I/O configuration
           register
     */
     volatile uint32_t MAPR2;
 
-} AFIO_Typedef;
+} AFIO_TypeDef;
 
 #define AFIO_BASE            (0x40010000)
 #define AFIO                 ((AFIO_TypeDef*)AFIO_BASE)
@@ -369,7 +379,7 @@ typedef struct {
     */
     volatile uint32_t PR;
 
-} EXTI_Typedef;
+} EXTI_TypeDef;
 
 #define EXTI_BASE            (0x40010400)
 #define EXTI                 ((EXTI_TypeDef*)EXTI_BASE)
@@ -408,6 +418,7 @@ typedef struct {
           register
     */
     volatile uint32_t CMAR1;
+    volatile uint32_t __RESERVED0;
     /**
     * DMA channel configuration register
           (DMA_CCR)
@@ -428,6 +439,7 @@ typedef struct {
           register
     */
     volatile uint32_t CMAR2;
+    volatile uint32_t __RESERVED1;
     /**
     * DMA channel configuration register
           (DMA_CCR)
@@ -448,6 +460,7 @@ typedef struct {
           register
     */
     volatile uint32_t CMAR3;
+    volatile uint32_t __RESERVED2;
     /**
     * DMA channel configuration register
           (DMA_CCR)
@@ -468,6 +481,7 @@ typedef struct {
           register
     */
     volatile uint32_t CMAR4;
+    volatile uint32_t __RESERVED3;
     /**
     * DMA channel configuration register
           (DMA_CCR)
@@ -488,6 +502,7 @@ typedef struct {
           register
     */
     volatile uint32_t CMAR5;
+    volatile uint32_t __RESERVED4;
     /**
     * DMA channel configuration register
           (DMA_CCR)
@@ -508,6 +523,7 @@ typedef struct {
           register
     */
     volatile uint32_t CMAR6;
+    volatile uint32_t __RESERVED5;
     /**
     * DMA channel configuration register
           (DMA_CCR)
@@ -529,7 +545,7 @@ typedef struct {
     */
     volatile uint32_t CMAR7;
 
-} DMA_Typedef;
+} DMA_TypeDef;
 
 #define DMA1_BASE            (0x40020000)
 #define DMA1                 ((DMA_TypeDef*)DMA1_BASE)
@@ -615,19 +631,21 @@ typedef struct {
     * SDIO mask register (SDIO_MASK)
     */
     volatile uint32_t MASK;
+    volatile uint32_t __RESERVED0[2];
     /**
     * Bits 23:0 = FIFOCOUNT: Remaining number of
           words to be written to or read from the
           FIFO
     */
     volatile uint32_t FIFOCNT;
+    volatile uint32_t __RESERVED1[13];
     /**
     * bits 31:0 = FIFOData: Receive and transmit
           FIFO data
     */
     volatile uint32_t FIFO;
 
-} SDIO_Typedef;
+} SDIO_TypeDef;
 
 #define SDIO_BASE            (0x40018000)
 #define SDIO                 ((SDIO_TypeDef*)SDIO_BASE)
@@ -681,7 +699,7 @@ typedef struct {
     */
     volatile uint32_t ALRL;
 
-} RTC_Typedef;
+} RTC_TypeDef;
 
 #define RTC_BASE            (0x40002800)
 #define RTC                 ((RTC_TypeDef*)RTC_BASE)
@@ -730,6 +748,22 @@ typedef struct {
     * Backup data register (BKP_DR)
     */
     volatile uint32_t DR10;
+    /**
+    * RTC clock calibration register
+          (BKP_RTCCR)
+    */
+    volatile uint32_t RTCCR;
+    /**
+    * Backup control register
+          (BKP_CR)
+    */
+    volatile uint32_t CR;
+    /**
+    * BKP_CSR control/status register
+          (BKP_CSR)
+    */
+    volatile uint32_t CSR;
+    volatile uint32_t __RESERVED0[2];
     /**
     * Backup data register (BKP_DR)
     */
@@ -858,23 +892,8 @@ typedef struct {
     * Backup data register (BKP_DR)
     */
     volatile uint32_t DR42;
-    /**
-    * RTC clock calibration register
-          (BKP_RTCCR)
-    */
-    volatile uint32_t RTCCR;
-    /**
-    * Backup control register
-          (BKP_CR)
-    */
-    volatile uint32_t CR;
-    /**
-    * BKP_CSR control/status register
-          (BKP_CSR)
-    */
-    volatile uint32_t CSR;
 
-} BKP_Typedef;
+} BKP_TypeDef;
 
 #define BKP_BASE            (0x40006C00)
 #define BKP                 ((BKP_TypeDef*)BKP_BASE)
@@ -900,7 +919,7 @@ typedef struct {
     */
     volatile uint32_t SR;
 
-} IWDG_Typedef;
+} IWDG_TypeDef;
 
 #define IWDG_BASE            (0x40003000)
 #define IWDG                 ((IWDG_TypeDef*)IWDG_BASE)
@@ -923,7 +942,7 @@ typedef struct {
     */
     volatile uint32_t SR;
 
-} WWDG_Typedef;
+} WWDG_TypeDef;
 
 #define WWDG_BASE            (0x40002C00)
 #define WWDG                 ((WWDG_TypeDef*)WWDG_BASE)
@@ -962,20 +981,10 @@ typedef struct {
     */
     volatile uint32_t CCMR1_Output;
     /**
-    * capture/compare mode register 1 (input
-          mode)
-    */
-    volatile uint32_t CCMR1_Input;
-    /**
     * capture/compare mode register (output
           mode)
     */
     volatile uint32_t CCMR2_Output;
-    /**
-    * capture/compare mode register 2 (input
-          mode)
-    */
-    volatile uint32_t CCMR2_Input;
     /**
     * capture/compare enable
           register
@@ -994,6 +1003,10 @@ typedef struct {
     */
     volatile uint32_t ARR;
     /**
+    * repetition counter register
+    */
+    volatile uint32_t RCR;
+    /**
     * capture/compare register 1
     */
     volatile uint32_t CCR1;
@@ -1010,6 +1023,10 @@ typedef struct {
     */
     volatile uint32_t CCR4;
     /**
+    * break and dead-time register
+    */
+    volatile uint32_t BDTR;
+    /**
     * DMA control register
     */
     volatile uint32_t DCR;
@@ -1017,16 +1034,8 @@ typedef struct {
     * DMA address for full transfer
     */
     volatile uint32_t DMAR;
-    /**
-    * repetition counter register
-    */
-    volatile uint32_t RCR;
-    /**
-    * break and dead-time register
-    */
-    volatile uint32_t BDTR;
 
-} TIM_Typedef;
+} TIM_TypeDef;
 
 #define TIM1_BASE            (0x40012C00)
 #define TIM1                 ((TIM_TypeDef*)TIM1_BASE)
@@ -1111,7 +1120,7 @@ typedef struct {
     */
     volatile uint32_t TRISE;
 
-} I2C_Typedef;
+} I2C_TypeDef;
 
 #define I2C1_BASE            (0x40005400)
 #define I2C1                 ((I2C_TypeDef*)I2C1_BASE)
@@ -1160,7 +1169,7 @@ typedef struct {
     */
     volatile uint32_t I2SPR;
 
-} SPI_Typedef;
+} SPI_TypeDef;
 
 #define SPI1_BASE            (0x40013000)
 #define SPI1                 ((SPI_TypeDef*)SPI1_BASE)
@@ -1206,7 +1215,7 @@ typedef struct {
     */
     volatile uint32_t GTPR;
 
-} USART_Typedef;
+} USART_TypeDef;
 
 #define USART1_BASE            (0x40013800)
 #define USART1                 ((USART_TypeDef*)USART1_BASE)
@@ -1308,7 +1317,7 @@ typedef struct {
     */
     volatile uint32_t DR;
 
-} ADC_Typedef;
+} ADC_TypeDef;
 
 #define ADC1_BASE            (0x40012400)
 #define ADC1                 ((ADC_TypeDef*)ADC1_BASE)
@@ -1355,6 +1364,7 @@ typedef struct {
     * CAN_BTR
     */
     volatile uint32_t CAN_BTR;
+    volatile uint32_t __RESERVED0[88];
     /**
     * CAN_TI0R
     */
@@ -1435,6 +1445,7 @@ typedef struct {
     * CAN_RDH1R
     */
     volatile uint32_t CAN_RDH1R;
+    volatile uint32_t __RESERVED1[12];
     /**
     * CAN_FMR
     */
@@ -1443,18 +1454,22 @@ typedef struct {
     * CAN_FM1R
     */
     volatile uint32_t CAN_FM1R;
+    volatile uint32_t __RESERVED2;
     /**
     * CAN_FS1R
     */
     volatile uint32_t CAN_FS1R;
+    volatile uint32_t __RESERVED3;
     /**
     * CAN_FFA1R
     */
     volatile uint32_t CAN_FFA1R;
+    volatile uint32_t __RESERVED4;
     /**
     * CAN_FA1R
     */
     volatile uint32_t CAN_FA1R;
+    volatile uint32_t __RESERVED5[8];
     /**
     * Filter bank 0 register 1
     */
@@ -1568,7 +1583,7 @@ typedef struct {
     */
     volatile uint32_t F13R2;
 
-} CAN_Typedef;
+} CAN_TypeDef;
 
 #define CAN1_BASE            (0x40006400)
 #define CAN1                 ((CAN_TypeDef*)CAN1_BASE)
@@ -1647,7 +1662,7 @@ typedef struct {
     */
     volatile uint32_t DOR2;
 
-} DAC_Typedef;
+} DAC_TypeDef;
 
 #define DAC_BASE            (0x40007400)
 #define DAC                 ((DAC_TypeDef*)DAC_BASE)
@@ -1665,7 +1680,7 @@ typedef struct {
     */
     volatile uint32_t CR;
 
-} DBG_Typedef;
+} DBG_TypeDef;
 
 #define DBG_BASE            (0xE0042000)
 #define DBG                 ((DBG_TypeDef*)DBG_BASE)
@@ -1693,7 +1708,7 @@ typedef struct {
     */
     volatile uint32_t CR;
 
-} CRC_Typedef;
+} CRC_TypeDef;
 
 #define CRC_BASE            (0x40023000)
 #define CRC                 ((CRC_TypeDef*)CRC_BASE)
@@ -1726,6 +1741,7 @@ typedef struct {
     * Flash address register
     */
     volatile uint32_t AR;
+    volatile uint32_t __RESERVED0;
     /**
     * Option byte register
     */
@@ -1735,7 +1751,7 @@ typedef struct {
     */
     volatile uint32_t WRPR;
 
-} FLASH_Typedef;
+} FLASH_TypeDef;
 
 #define FLASH_BASE            (0x40022000)
 #define FLASH                 ((FLASH_TypeDef*)FLASH_BASE)
@@ -1777,6 +1793,7 @@ typedef struct {
     * endpoint 7 register
     */
     volatile uint32_t EP7R;
+    volatile uint32_t __RESERVED0[8];
     /**
     * control register
     */
@@ -1798,7 +1815,7 @@ typedef struct {
     */
     volatile uint32_t BTABLE;
 
-} USB_Typedef;
+} USB_TypeDef;
 
 #define USB_BASE            (0x40005C00)
 #define USB                 ((USB_TypeDef*)USB_BASE)
@@ -1822,6 +1839,7 @@ typedef struct {
           (OTG_FS_DSTS)
     */
     volatile uint32_t FS_DSTS;
+    volatile uint32_t __RESERVED0;
     /**
     * OTG_FS device IN endpoint common interrupt
           mask register (OTG_FS_DIEPMSK)
@@ -1842,6 +1860,7 @@ typedef struct {
           (OTG_FS_DAINTMSK)
     */
     volatile uint32_t FS_DAINTMSK;
+    volatile uint32_t __RESERVED1[2];
     /**
     * OTG_FS device VBUS discharge time
           register
@@ -1852,153 +1871,182 @@ typedef struct {
           register
     */
     volatile uint32_t DVBUSPULSE;
+    volatile uint32_t __RESERVED2;
     /**
     * OTG_FS device IN endpoint FIFO empty
           interrupt mask register
     */
     volatile uint32_t DIEPEMPMSK;
+    volatile uint32_t __RESERVED3[50];
     /**
     * OTG_FS device control IN endpoint 0 control
           register (OTG_FS_DIEPCTL0)
     */
     volatile uint32_t FS_DIEPCTL0;
-    /**
-    * OTG device endpoint-1 control
-          register
-    */
-    volatile uint32_t DIEPCTL1;
-    /**
-    * OTG device endpoint-2 control
-          register
-    */
-    volatile uint32_t DIEPCTL2;
-    /**
-    * OTG device endpoint-3 control
-          register
-    */
-    volatile uint32_t DIEPCTL3;
-    /**
-    * device endpoint-0 control
-          register
-    */
-    volatile uint32_t DOEPCTL0;
-    /**
-    * device endpoint-1 control
-          register
-    */
-    volatile uint32_t DOEPCTL1;
-    /**
-    * device endpoint-2 control
-          register
-    */
-    volatile uint32_t DOEPCTL2;
-    /**
-    * device endpoint-3 control
-          register
-    */
-    volatile uint32_t DOEPCTL3;
+    volatile uint32_t __RESERVED4;
     /**
     * device endpoint-x interrupt
           register
     */
     volatile uint32_t DIEPINT0;
-    /**
-    * device endpoint-1 interrupt
-          register
-    */
-    volatile uint32_t DIEPINT1;
-    /**
-    * device endpoint-2 interrupt
-          register
-    */
-    volatile uint32_t DIEPINT2;
-    /**
-    * device endpoint-3 interrupt
-          register
-    */
-    volatile uint32_t DIEPINT3;
-    /**
-    * device endpoint-0 interrupt
-          register
-    */
-    volatile uint32_t DOEPINT0;
-    /**
-    * device endpoint-1 interrupt
-          register
-    */
-    volatile uint32_t DOEPINT1;
-    /**
-    * device endpoint-2 interrupt
-          register
-    */
-    volatile uint32_t DOEPINT2;
-    /**
-    * device endpoint-3 interrupt
-          register
-    */
-    volatile uint32_t DOEPINT3;
+    volatile uint32_t __RESERVED5;
     /**
     * device endpoint-0 transfer size
           register
     */
     volatile uint32_t DIEPTSIZ0;
-    /**
-    * device OUT endpoint-0 transfer size
-          register
-    */
-    volatile uint32_t DOEPTSIZ0;
-    /**
-    * device endpoint-1 transfer size
-          register
-    */
-    volatile uint32_t DIEPTSIZ1;
-    /**
-    * device endpoint-2 transfer size
-          register
-    */
-    volatile uint32_t DIEPTSIZ2;
-    /**
-    * device endpoint-3 transfer size
-          register
-    */
-    volatile uint32_t DIEPTSIZ3;
+    volatile uint32_t __RESERVED6;
     /**
     * OTG_FS device IN endpoint transmit FIFO
           status register
     */
     volatile uint32_t DTXFSTS0;
+    volatile uint32_t __RESERVED7;
+    /**
+    * OTG device endpoint-1 control
+          register
+    */
+    volatile uint32_t DIEPCTL1;
+    volatile uint32_t __RESERVED8;
+    /**
+    * device endpoint-1 interrupt
+          register
+    */
+    volatile uint32_t DIEPINT1;
+    volatile uint32_t __RESERVED9;
+    /**
+    * device endpoint-1 transfer size
+          register
+    */
+    volatile uint32_t DIEPTSIZ1;
+    volatile uint32_t __RESERVED10;
     /**
     * OTG_FS device IN endpoint transmit FIFO
           status register
     */
     volatile uint32_t DTXFSTS1;
+    volatile uint32_t __RESERVED11;
+    /**
+    * OTG device endpoint-2 control
+          register
+    */
+    volatile uint32_t DIEPCTL2;
+    volatile uint32_t __RESERVED12;
+    /**
+    * device endpoint-2 interrupt
+          register
+    */
+    volatile uint32_t DIEPINT2;
+    volatile uint32_t __RESERVED13;
+    /**
+    * device endpoint-2 transfer size
+          register
+    */
+    volatile uint32_t DIEPTSIZ2;
+    volatile uint32_t __RESERVED14;
     /**
     * OTG_FS device IN endpoint transmit FIFO
           status register
     */
     volatile uint32_t DTXFSTS2;
+    volatile uint32_t __RESERVED15;
+    /**
+    * OTG device endpoint-3 control
+          register
+    */
+    volatile uint32_t DIEPCTL3;
+    volatile uint32_t __RESERVED16;
+    /**
+    * device endpoint-3 interrupt
+          register
+    */
+    volatile uint32_t DIEPINT3;
+    volatile uint32_t __RESERVED17;
+    /**
+    * device endpoint-3 transfer size
+          register
+    */
+    volatile uint32_t DIEPTSIZ3;
+    volatile uint32_t __RESERVED18;
     /**
     * OTG_FS device IN endpoint transmit FIFO
           status register
     */
     volatile uint32_t DTXFSTS3;
+    volatile uint32_t __RESERVED19[97];
+    /**
+    * device endpoint-0 control
+          register
+    */
+    volatile uint32_t DOEPCTL0;
+    volatile uint32_t __RESERVED20;
+    /**
+    * device endpoint-0 interrupt
+          register
+    */
+    volatile uint32_t DOEPINT0;
+    volatile uint32_t __RESERVED21;
+    /**
+    * device OUT endpoint-0 transfer size
+          register
+    */
+    volatile uint32_t DOEPTSIZ0;
+    volatile uint32_t __RESERVED22[3];
+    /**
+    * device endpoint-1 control
+          register
+    */
+    volatile uint32_t DOEPCTL1;
+    volatile uint32_t __RESERVED23;
+    /**
+    * device endpoint-1 interrupt
+          register
+    */
+    volatile uint32_t DOEPINT1;
+    volatile uint32_t __RESERVED24;
     /**
     * device OUT endpoint-1 transfer size
           register
     */
     volatile uint32_t DOEPTSIZ1;
+    volatile uint32_t __RESERVED25[3];
+    /**
+    * device endpoint-2 control
+          register
+    */
+    volatile uint32_t DOEPCTL2;
+    volatile uint32_t __RESERVED26;
+    /**
+    * device endpoint-2 interrupt
+          register
+    */
+    volatile uint32_t DOEPINT2;
+    volatile uint32_t __RESERVED27;
     /**
     * device OUT endpoint-2 transfer size
           register
     */
     volatile uint32_t DOEPTSIZ2;
+    volatile uint32_t __RESERVED28[3];
+    /**
+    * device endpoint-3 control
+          register
+    */
+    volatile uint32_t DOEPCTL3;
+    volatile uint32_t __RESERVED29;
+    /**
+    * device endpoint-3 interrupt
+          register
+    */
+    volatile uint32_t DOEPINT3;
+    volatile uint32_t __RESERVED30;
     /**
     * device OUT endpoint-3 transfer size
           register
     */
     volatile uint32_t DOEPTSIZ3;
 
-} USB_OTG_FS_Typedef;
+} USB_OTG_FS_TypeDef;
 
 #define OTG_FS_DEVICE_BASE            (0x50000800)
 #define OTG_FS_DEVICE                 ((USB_OTG_FS_TypeDef*)OTG_FS_DEVICE_BASE)
@@ -2041,6 +2089,7 @@ typedef struct {
           register (ETH_MMCTIMR)
     */
     volatile uint32_t MMCTIMR;
+    volatile uint32_t __RESERVED0[14];
     /**
     * Ethernet MMC transmitted good frames after a
           single collision counter
@@ -2051,11 +2100,13 @@ typedef struct {
           more than a single collision
     */
     volatile uint32_t MMCTGFMSCCR;
+    volatile uint32_t __RESERVED1[5];
     /**
     * Ethernet MMC transmitted good frames counter
           register
     */
     volatile uint32_t MMCTGFCR;
+    volatile uint32_t __RESERVED2[10];
     /**
     * Ethernet MMC received frames with CRC error
           counter register
@@ -2066,13 +2117,14 @@ typedef struct {
           error counter register
     */
     volatile uint32_t MMCRFAECR;
+    volatile uint32_t __RESERVED3[10];
     /**
     * MMC received good unicast frames counter
           register
     */
     volatile uint32_t MMCRGUFCR;
 
-} ETHERNET_Typedef;
+} ETHERNET_TypeDef;
 
 #define ETHERNET_MMC_BASE            (0x40028100)
 #define ETHERNET_MMC                 ((ETHERNET_TypeDef*)ETHERNET_MMC_BASE)
@@ -2099,6 +2151,7 @@ typedef struct {
     * Interrupt Set-Enable Register
     */
     volatile uint32_t ISER1;
+    volatile uint32_t __RESERVED0[30];
     /**
     * Interrupt Clear-Enable
           Register
@@ -2109,6 +2162,7 @@ typedef struct {
           Register
     */
     volatile uint32_t ICER1;
+    volatile uint32_t __RESERVED1[30];
     /**
     * Interrupt Set-Pending Register
     */
@@ -2117,6 +2171,7 @@ typedef struct {
     * Interrupt Set-Pending Register
     */
     volatile uint32_t ISPR1;
+    volatile uint32_t __RESERVED2[30];
     /**
     * Interrupt Clear-Pending
           Register
@@ -2127,6 +2182,7 @@ typedef struct {
           Register
     */
     volatile uint32_t ICPR1;
+    volatile uint32_t __RESERVED3[30];
     /**
     * Interrupt Active Bit Register
     */
@@ -2135,6 +2191,7 @@ typedef struct {
     * Interrupt Active Bit Register
     */
     volatile uint32_t IABR1;
+    volatile uint32_t __RESERVED4[62];
     /**
     * Interrupt Priority Register
     */
@@ -2196,7 +2253,7 @@ typedef struct {
     */
     volatile uint32_t IPR14;
 
-} NVIC_Typedef;
+} NVIC_TypeDef;
 
 #define NVIC_BASE            (0xE000E100)
 #define NVIC                 ((NVIC_TypeDef*)NVIC_BASE)
@@ -2228,7 +2285,7 @@ typedef struct {
     */
     volatile uint32_t MPU_RASR;
 
-} MPU_Typedef;
+} MPU_TypeDef;
 
 #define MPU_BASE            (0xE000ED90)
 #define MPU                 ((MPU_TypeDef*)MPU_BASE)
@@ -2242,7 +2299,7 @@ typedef struct {
     */
     volatile uint32_t ACTRL;
 
-} SCB_Typedef;
+} SCB_TypeDef;
 
 #define SCB_ACTRL_BASE            (0xE000E008)
 #define SCB_ACTRL                 ((SCB_TypeDef*)SCB_ACTRL_BASE)
@@ -2276,7 +2333,7 @@ typedef struct {
     */
     volatile uint32_t CALIB;
 
-} STK_Typedef;
+} STK_TypeDef;
 
 #define STK_BASE            (0xE000E010)
 #define STK                 ((STK_TypeDef*)STK_BASE)

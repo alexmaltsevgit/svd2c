@@ -26,7 +26,8 @@ struct Peripheral {
 struct Register {
     name: String,
     description: String,
-    address_offset: String,
+    address_offset: u32,
+    alternate_register: Option<String>,
     size_bits: u8,
     reset_value: String,
     fields: Vec<Field>,
@@ -89,14 +90,6 @@ impl Writer {
     }
 
     fn w_peripheral(&mut self, peripheral: &Peripheral) {
-        println!(
-            "{}",
-            peripheral
-                .group_name
-                .clone()
-                .unwrap_or("  -   ".into())
-                .clone()
-        );
         let Some(gp) = peripheral.group_name.clone() else {
             return self.w_new_peripheral(peripheral);
         };
@@ -149,7 +142,31 @@ impl Writer {
         let t = self.load_template("register.h");
         let mut out = String::with_capacity(t.capacity() * registers.len());
 
-        for reg in registers {
+        let mut fillers: Vec<(usize, u8)> = Vec::new();
+
+        for (idx, w) in registers.windows(2).enumerate() {
+            if let Some(_) = &w[1].alternate_register {
+                continue;
+            }
+
+            let size_bytes = w[0].size_bits as u32 / 8;
+            let diff = w[1].address_offset - w[0].address_offset - size_bytes;
+
+            if diff == 0 {
+                continue;
+            }
+
+            if diff % size_bytes != 0 {
+                panic!("Error in reservation fillers computation");
+            }
+            fillers.push((idx, (diff / size_bytes) as u8));
+        }
+
+        for (idx, reg) in registers.iter().enumerate() {
+            if let Some(_) = reg.alternate_register {
+                continue;
+            }
+
             let size_bits = reg.size_bits.to_string();
 
             let mut vars = HashMap::new();
@@ -158,6 +175,27 @@ impl Writer {
             vars.insert("name".to_string(), reg.name.as_str());
 
             out.push_str(&strfmt(&t, &vars).unwrap());
+
+            for (n, filler) in fillers.iter().enumerate() {
+                if filler.0 != idx {
+                    continue;
+                }
+                let n = n.to_string();
+                let c = filler.1.to_string();
+
+                let t = self.load_template(if filler.1 == 1 {
+                    "reserved_one.h"
+                } else {
+                    "reserved_many.h"
+                });
+
+                let mut vars = HashMap::new();
+                vars.insert("size_bits".to_string(), size_bits.as_str());
+                vars.insert("n".to_string(), n.as_str());
+                vars.insert("count".to_string(), c.as_str());
+
+                out.push_str(&strfmt(&t, &vars).unwrap());
+            }
         }
 
         out
@@ -214,16 +252,19 @@ impl Parser {
     }
 
     fn commit_new_register(&mut self) {
-        self.new_peripheral
+        let p = self
+            .new_peripheral
             .as_mut()
-            .expect("Tried to commit Register outside of Peripheral")
-            .registers
-            .push(
-                self.new_register
-                    .as_ref()
-                    .expect("Tried to commit Register in invalid state")
-                    .clone(),
-            );
+            .expect("Tried to commit Register outside of Peripheral");
+
+        p.registers.push(
+            self.new_register
+                .as_ref()
+                .expect("Tried to commit Register in invalid state")
+                .clone(),
+        );
+
+        p.registers.sort_by_key(|i| i.address_offset);
 
         self.new_register = None;
         self.new_field = None;
@@ -430,7 +471,9 @@ fn main() {
                                 .new_register
                                 .as_mut()
                                 .expect("'address_offset' found outside of Register")
-                                .address_offset = text
+                                .address_offset =
+                                u32::from_str_radix(text.strip_prefix("0x").unwrap_or(&text), 16)
+                                    .expect("Could not parse size")
                         }
                         _ => (),
                     },
@@ -459,8 +502,19 @@ fn main() {
                         _ => (),
                     },
 
-                    "bitOffset" => match parser.context {
+                    "alternateRegister" => match parser.context {
                         TranspilerContext::Register => {
+                            parser
+                                .new_register
+                                .as_mut()
+                                .expect("'alternate_register' found outside of Register")
+                                .alternate_register = Some(text)
+                        }
+                        _ => (),
+                    },
+
+                    "bitOffset" => match parser.context {
+                        TranspilerContext::Field => {
                             parser
                                 .new_field
                                 .as_mut()
@@ -472,7 +526,7 @@ fn main() {
                     },
 
                     "bitWidth" => match parser.context {
-                        TranspilerContext::Register => {
+                        TranspilerContext::Field => {
                             parser
                                 .new_field
                                 .as_mut()
