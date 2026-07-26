@@ -51,3 +51,15 @@ updateJson("npm/cli/package.json", (pkg) => {
 });
 
 console.log(`\nNew version ${newVersion}!`);
+
+try {
+  execSync("git add .");
+  execSync(`git commit -m "Release v${newVersion}"`);
+  execSync(`git tag v${newVersion}`);
+
+  console.log("\nCommitted and tagged. Now run:");
+  console.log("git push origin main");
+  console.log(`git push origin v${newVersion}`);
+} catch (error) {
+  console.error("\nGit error");
+}

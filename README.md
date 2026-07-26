@@ -1,6 +1,6 @@
 # svd2c
 
-### Transform .svd files into C-headers in one line
+### Transform .svd files into CMSIS C-headers in one command
 
 ![C-header](docs/code.png)
 

@@ -6,6 +6,7 @@
   "keywords": [
     "svd",
     "c",
+    "cmsis",
     "stm32"
   ],
   "license": "ISC",
@@ -27,6 +28,9 @@
     "bin"
   ],
   "optionalDependencies": {
+    "svd2c-darwin-arm64": "0.1.1",
+    "svd2c-darwin-x64": "0.1.1",
+    "svd2c-linux-arm64": "0.1.1",
     "svd2c-linux-x64": "0.1.1",
     "svd2c-win32-x64": "0.1.1"
   }
