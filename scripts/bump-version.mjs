@@ -1,3 +1,4 @@
+import { execSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -54,12 +55,11 @@ console.log(`\nNew version ${newVersion}!`);
 
 try {
   execSync("git add .");
-  execSync(`git commit -m "Release v${newVersion}"`);
   execSync(`git tag v${newVersion}`);
 
-  console.log("\nCommitted and tagged. Now run:");
+  console.log("\nTagged. Now run:");
   console.log("git push origin main");
   console.log(`git push origin v${newVersion}`);
 } catch (error) {
-  console.error("\nGit error");
+  console.error(`\nGit error: ${error}`);
 }

@@ -1,7 +1,7 @@
 {
   "name": "svd2c",
-  "version": "0.1.1",
-  "description": "Generate .svd files to C header",
+  "version": "0.1.3",
+  "description": "Generate C-header files from SVD",
   "homepage": "https://github.com/alexmaltsevgit/svd2c",
   "keywords": [
     "svd",
@@ -9,7 +9,7 @@
     "cmsis",
     "stm32"
   ],
-  "license": "ISC",
+  "license": "MIT",
   "author": "Alexander Maltsev",
   "bugs": {
     "url": "https://github.com/alexmaltsevgit/svd2c/issues"
@@ -28,10 +28,9 @@
     "bin"
   ],
   "optionalDependencies": {
-    "svd2c-darwin-arm64": "0.1.1",
-    "svd2c-darwin-x64": "0.1.1",
-    "svd2c-linux-arm64": "0.1.1",
-    "svd2c-linux-x64": "0.1.1",
-    "svd2c-win32-x64": "0.1.1"
+    "svd2c-darwin-arm64": "0.1.3",
+    "svd2c-darwin-x64": "0.1.3",
+    "svd2c-linux-x64": "0.1.3",
+    "svd2c-win32-x64": "0.1.3"
   }
 }
