@@ -39,6 +39,14 @@ struct Field {
     description: String,
     bit_offset: u16,
     bit_width: u8,
+    enum_values: Vec<EnumValue>,
+}
+
+#[derive(Default, Clone)]
+struct EnumValue {
+    name: String,
+    description: String,
+    value: u32,
 }
 
 enum TranspilerContext {
@@ -50,6 +58,8 @@ enum TranspilerContext {
     Interrupt,
     Register,
     Field,
+    Enum,
+    EnumValue,
 }
 
 struct Writer {
@@ -134,6 +144,11 @@ impl Writer {
             .write_all(&strfmt(&t, &vars).unwrap().into_bytes())
             .expect("Write error");
 
+        self.w_asserts(
+            peripheral.group_name.as_ref().unwrap_or(&peripheral.name),
+            &peripheral.registers,
+        );
+
         self.output
             .write_all(all_fields.as_bytes())
             .expect("Write error");
@@ -159,9 +174,14 @@ impl Writer {
         let t = self.load_template("register.h");
         let mut out = String::with_capacity(t.capacity() * registers.len());
 
-        let mut fillers: Vec<(usize, u8)> = Vec::new();
+        let mut fillers: Vec<(isize, u32)> = Vec::new();
 
         for (idx, w) in registers.windows(2).enumerate() {
+            // when first register needs __RESERVED padding before
+            if idx == 0 && w[0].address_offset > 0 {
+                fillers.push((-1, w[0].address_offset));
+            }
+
             if let Some(_) = &w[1].alternate_register {
                 continue;
             }
@@ -176,15 +196,30 @@ impl Writer {
             if diff % size_bytes != 0 {
                 panic!("Error in reservation fillers computation");
             }
-            fillers.push((idx, (diff / size_bytes) as u8));
+            fillers.push((idx as isize, diff / size_bytes));
         }
 
+        let mut fillers_n = 0;
         for (idx, reg) in registers.iter().enumerate() {
             if let Some(_) = reg.alternate_register {
                 continue;
             }
 
             let size_bits = reg.size_bits.to_string();
+
+            // zero filler
+            if let Some(filler) = fillers.get(0)
+                && filler.0 == -1
+                && idx == 0
+            {
+                self.buff_register_filler(
+                    &mut out,
+                    &8.to_string(),
+                    &fillers_n.to_string(),
+                    filler.1,
+                );
+                fillers_n += 1;
+            }
 
             let mut vars = HashMap::new();
             vars.insert("description".to_string(), reg.description.as_str());
@@ -193,38 +228,100 @@ impl Writer {
 
             out.push_str(&strfmt(&t, &vars).unwrap());
 
-            for (n, filler) in fillers.iter().enumerate() {
-                if filler.0 != idx {
+            for filler in fillers.iter() {
+                if filler.0 != idx as isize {
                     continue;
                 }
-                let n = n.to_string();
-                let c = filler.1.to_string();
 
-                let t = self.load_template(if filler.1 == 1 {
-                    "reserved_one.h"
-                } else {
-                    "reserved_many.h"
-                });
-
-                let mut vars = HashMap::new();
-                vars.insert("size_bits".to_string(), size_bits.as_str());
-                vars.insert("n".to_string(), n.as_str());
-                vars.insert("count".to_string(), c.as_str());
-
-                out.push_str(&strfmt(&t, &vars).unwrap());
+                self.buff_register_filler(&mut out, &size_bits, &fillers_n.to_string(), filler.1);
+                fillers_n += 1;
             }
         }
 
         out
     }
 
+    fn make_enum_values(
+        &mut self,
+        group_name: &str,
+        register_name: &str,
+        field_name: &str,
+        enum_values: &[EnumValue],
+    ) -> String {
+        let t = self.load_template("enumerated_value.h");
+        let mut out = String::with_capacity(t.capacity() * enum_values.len());
+
+        for v in enum_values {
+            let value_str = format!("0x{:x}", v.value);
+
+            let mut vars = HashMap::new();
+            vars.insert("description".to_string(), v.description.as_str());
+            vars.insert("group_name".to_string(), group_name);
+            vars.insert("register".to_string(), register_name);
+            vars.insert("field".to_string(), field_name);
+            vars.insert("name".to_string(), &v.name);
+            vars.insert("value".to_string(), &value_str);
+
+            out.push_str(&strfmt(&t, &vars).unwrap());
+        }
+
+        out
+    }
+
+    fn buff_register_filler(&mut self, out: &mut String, size_bits: &str, n: &str, count: u32) {
+        let count_string = count.to_string();
+
+        let t = self.load_template(if count == 1 {
+            "reserved_one.h"
+        } else {
+            "reserved_many.h"
+        });
+
+        let mut vars = HashMap::new();
+        vars.insert("size_bits".to_string(), size_bits);
+        vars.insert("n".to_string(), n);
+        vars.insert("count".to_string(), &count_string);
+
+        out.push_str(&strfmt(&t, &vars).unwrap());
+    }
+
+    fn w_asserts(&mut self, group_name: &str, registers: &[Register]) {
+        let t = self.load_template("assert.h");
+        let mut out = String::with_capacity(t.capacity() * registers.len());
+
+        for reg in registers.iter() {
+            if let Some(_) = reg.alternate_register {
+                continue;
+            }
+
+            let offset = format!("0x{:x}", reg.address_offset);
+
+            let mut vars = HashMap::new();
+            vars.insert("group_name".to_string(), group_name);
+            vars.insert("register".to_string(), &reg.name);
+            vars.insert("offset".to_string(), offset.as_str());
+
+            out.push_str(&strfmt(&t, &vars).unwrap());
+        }
+
+        self.output.write_all(out.as_bytes()).expect("Write error");
+    }
+
     fn make_fields(&mut self, group_name: &str, register_name: &str, fields: &[Field]) -> String {
-        let t = self.load_template("field.h");
-        let mut out = String::with_capacity(t.capacity() * fields.len());
+        let mut out = String::with_capacity(fields.len() * 64);
 
         for field in fields.iter() {
+            let t = self.load_template(if field.enum_values.is_empty() {
+                "field.h"
+            } else {
+                "field_enumerated.h"
+            });
+
             let offset = field.bit_offset.to_string();
             let width = format!("0x{:x}", field.bit_width);
+
+            let enum_values =
+                self.make_enum_values(group_name, register_name, &field.name, &field.enum_values);
 
             let mut vars = HashMap::new();
             vars.insert("description".to_string(), field.description.as_str());
@@ -233,6 +330,7 @@ impl Writer {
             vars.insert("field_name".to_string(), field.name.as_str());
             vars.insert("offset".to_string(), offset.as_str());
             vars.insert("width".to_string(), width.as_str());
+            vars.insert("enum".to_string(), &enum_values);
 
             out.push_str(&strfmt(&t, &vars).unwrap());
         }
@@ -258,6 +356,7 @@ struct Parser {
     new_peripheral: Option<Peripheral>,
     new_register: Option<Register>,
     new_field: Option<Field>,
+    new_enum_value: Option<EnumValue>,
 }
 
 impl Parser {
@@ -272,6 +371,7 @@ impl Parser {
             new_peripheral: None,
             new_register: None,
             new_field: None,
+            new_enum_value: None,
         }
     }
 
@@ -323,10 +423,26 @@ impl Parser {
 
         self.new_field = None;
     }
+
+    fn commit_new_enum_value(&mut self) {
+        self.new_field
+            .as_mut()
+            .expect("Tried to commit EnumValue outside of Field")
+            .enum_values
+            .push(
+                self.new_enum_value
+                    .as_ref()
+                    .expect("Tried to commit EnumValue in invalid state")
+                    .clone(),
+            );
+
+        self.new_enum_value = None;
+    }
 }
 
 fn main() {
     let args: Vec<String> = env::args().collect();
+
     let input_file_path = args
         .get(1)
         .expect("Provide input file path as 1st argument")
@@ -412,6 +528,15 @@ fn main() {
                         parser.new_field = Some(Field::default());
                     }
 
+                    b"enumeratedValues" => {
+                        parser.context = TranspilerContext::Enum;
+                    }
+
+                    b"enumeratedValue" => {
+                        parser.context = TranspilerContext::EnumValue;
+                        parser.new_enum_value = Some(EnumValue::default());
+                    }
+
                     _ => (),
                 }
             }
@@ -424,6 +549,7 @@ fn main() {
                 }
                 b"register" => parser.commit_new_register(),
                 b"field" => parser.commit_new_field(),
+                b"enumeratedValue" => parser.commit_new_enum_value(),
                 _ => (),
             },
 
@@ -457,6 +583,13 @@ fn main() {
                                 .expect("'name' found outside of Field")
                                 .name = text
                         }
+                        TranspilerContext::EnumValue => {
+                            parser
+                                .new_enum_value
+                                .as_mut()
+                                .expect("'name' found outside of EnumValue")
+                                .name = text
+                        }
                         _ => (),
                     },
 
@@ -480,6 +613,13 @@ fn main() {
                                 .new_field
                                 .as_mut()
                                 .expect("'description' found outside of Field")
+                                .description = text
+                        }
+                        TranspilerContext::EnumValue => {
+                            parser
+                                .new_enum_value
+                                .as_mut()
+                                .expect("'name' found outside of EnumValue")
                                 .description = text
                         }
                         _ => (),
@@ -574,6 +714,21 @@ fn main() {
                                 .as_mut()
                                 .expect("'bit_width' found outside of Field")
                                 .bit_width = text.parse::<u8>().expect("Could not parse bitWidth")
+                        }
+                        _ => (),
+                    },
+
+                    "value" => match parser.context {
+                        TranspilerContext::EnumValue => {
+                            parser
+                                .new_enum_value
+                                .as_mut()
+                                .expect("'value' found outside of EnumValue")
+                                .value = u32::from_str_radix(
+                                text.strip_prefix("0x").unwrap_or(&text),
+                                radix,
+                            )
+                            .expect("Could not parse value");
                         }
                         _ => (),
                     },
