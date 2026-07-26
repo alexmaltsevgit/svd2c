@@ -5,7 +5,9 @@ const path = require("node:path");
 
 const targets = {
   "linux-x64": "svd2c-linux-x64",
-  "win32-x64": "svd2c-win32-x64"
+  "win32-x64": "svd2c-win32-x64",
+  "darwin-arm64": "svd2c-darwin-arm64",
+  "darwin-x64": "svd2c-darwin-x64"
 };
 
 const target = `${process.platform}-${process.arch}`;

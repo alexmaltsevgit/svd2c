@@ -2,17 +2,12 @@
 
 all: check test
 
-build-all: build-linux-x64 build-linux-arm64 build-windows-x64
+build-all: build-linux-x64 build-windows-x64
 
 build-macos: build-darwin-x64 build-darwin-arm64
 
 build-linux-x64:
 	node scripts/build.mjs linux-x64
-
-build-linux-arm64:
-	CC_aarch64_unknown_linux_gnu=aarch64-linux-gnu-gcc \
-	CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc \
-	cargo build --release --target aarch64-unknown-linux-gnu
 
 build-windows-x64:
 	node scripts/build.mjs win32-x64
