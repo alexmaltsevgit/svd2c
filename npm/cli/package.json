@@ -2,12 +2,15 @@
   "name": "svd2c",
   "version": "0.1.0",
   "description": "Generate .svd files to C header",
-  "homepage": "https://github.com/alexmaltsevgit/svd2c#readme",
+  "homepage": "https://github.com/alexmaltsevgit/svd2c",
   "keywords": ["svd", "c", "stm32"],
   "license": "ISC",
   "author": "Alexander Maltsev",
   "bugs": {
     "url": "https://github.com/alexmaltsevgit/svd2c/issues"
+  },
+  "scripts": {
+    "prepack": "cp ../../README.md ."
   },
   "repository": {
     "type": "git",

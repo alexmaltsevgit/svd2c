@@ -2,8 +2,6 @@
 
 ### Transform .svd files into C-headers in one line
 
-<img src="docs/command.png" alt="alt" width="400" />
-
 ![C-header](docs/code.png)
 
 ## Installation

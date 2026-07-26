@@ -23,6 +23,14 @@ build-darwin-x64:
 build-darwin-arm64:
 	node scripts/build.mjs darwin-arm64
 
+bump:
+	@if [ -z "$(VERSION)" ]; then \
+		echo "Error: specify version (make bump VERSION=0.1.2"); \
+		exit 1; \
+	fi
+	node scripts/bump-version.mjs $(VERSION)
+	cargo check
+
 test:
 	cargo test
 
