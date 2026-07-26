@@ -1,2 +1,3 @@
+
 #define {name}_BASE            ({base_address})
-#define {name}                 (({group_name}_TypeDef *){name}_BASE)
+#define {name}                 (({group_name}_TypeDef*){name}_BASE)

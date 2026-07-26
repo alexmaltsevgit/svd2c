@@ -6,8 +6,9 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 /*
- * FSMC global interrupt
+ * Flexible static memory controller
  */
 typedef struct {
     /**
@@ -143,13 +144,13 @@ typedef struct {
     */
     volatile uint32_t BWTR4;
 
-} FSMC_Typedef
+} FSMC_Typedef;
 
 #define FSMC_BASE            (0xA0000000)
 #define FSMC                 ((FSMC_TypeDef*)FSMC_BASE)
+
 /*
- * PVD through EXTI line detection
-        interrupt
+ * Power control
  */
 typedef struct {
     /**
@@ -163,12 +164,13 @@ typedef struct {
     */
     volatile uint32_t CSR;
 
-} PVD_Typedef
+} PWR_Typedef;
 
-#define PVD_BASE            (0x40007000)
-#define PVD                 ((PVD_TypeDef*)PVD_BASE)
+#define PWR_BASE            (0x40007000)
+#define PWR                 ((PWR_TypeDef*)PWR_BASE)
+
 /*
- * RCC global interrupt
+ * Reset and clock control
  */
 typedef struct {
     /**
@@ -221,10 +223,11 @@ typedef struct {
     */
     volatile uint32_t CSR;
 
-} RCC_Typedef
+} RCC_Typedef;
 
 #define RCC_BASE            (0x40021000)
 #define RCC                 ((RCC_TypeDef*)RCC_BASE)
+
 /*
  * General purpose I/O
  */
@@ -265,29 +268,29 @@ typedef struct {
     */
     volatile uint32_t LCKR;
 
-} GPIOA_Typedef
+} GPIO_Typedef;
 
 #define GPIOA_BASE            (0x40010800)
-#define GPIOA                 ((GPIOA_TypeDef*)GPIOA_BASE)
-/*
- * 
- */
-typedef struct {
-
-} GPIOA_Typedef
+#define GPIOA                 ((GPIO_TypeDef*)GPIOA_BASE)
 
 #define GPIOB_BASE            (0x40010C00)
-#define GPIOB                 ((GPIOA_TypeDef*)GPIOB_BASE)
+#define GPIOB                 ((GPIO_TypeDef*)GPIOB_BASE)
+
 #define GPIOC_BASE            (0x40011000)
-#define GPIOC                 ((GPIOA_TypeDef *)GPIOC_BASE)
+#define GPIOC                 ((GPIO_TypeDef*)GPIOC_BASE)
+
 #define GPIOD_BASE            (0x40011400)
-#define GPIOD                 ((GPIOA_TypeDef *)GPIOD_BASE)
+#define GPIOD                 ((GPIO_TypeDef*)GPIOD_BASE)
+
 #define GPIOE_BASE            (0x40011800)
-#define GPIOE                 ((GPIOA_TypeDef *)GPIOE_BASE)
+#define GPIOE                 ((GPIO_TypeDef*)GPIOE_BASE)
+
 #define GPIOF_BASE            (0x40011C00)
-#define GPIOF                 ((GPIOA_TypeDef *)GPIOF_BASE)
+#define GPIOF                 ((GPIO_TypeDef*)GPIOF_BASE)
+
 #define GPIOG_BASE            (0x40012000)
-#define GPIOG                 ((GPIOA_TypeDef *)GPIOG_BASE)
+#define GPIOG                 ((GPIO_TypeDef*)GPIOG_BASE)
+
 /*
  * Alternate function I/O
  */
@@ -328,12 +331,13 @@ typedef struct {
     */
     volatile uint32_t MAPR2;
 
-} AFIO_Typedef
+} AFIO_Typedef;
 
 #define AFIO_BASE            (0x40010000)
 #define AFIO                 ((AFIO_TypeDef*)AFIO_BASE)
+
 /*
- * EXTI Line[15:10] interrupts
+ * EXTI
  */
 typedef struct {
     /**
@@ -365,12 +369,13 @@ typedef struct {
     */
     volatile uint32_t PR;
 
-} EXTI15_10_Typedef
+} EXTI_Typedef;
 
-#define EXTI15_10_BASE            (0x40010400)
-#define EXTI15_10                 ((EXTI15_10_TypeDef*)EXTI15_10_BASE)
+#define EXTI_BASE            (0x40010400)
+#define EXTI                 ((EXTI_TypeDef*)EXTI_BASE)
+
 /*
- * DMA1 Channel7 global interrupt
+ * DMA controller
  */
 typedef struct {
     /**
@@ -524,22 +529,17 @@ typedef struct {
     */
     volatile uint32_t CMAR7;
 
-} DMA1_Channel7_Typedef
+} DMA_Typedef;
 
-#define DMA1_Channel7_BASE            (0x40020000)
-#define DMA1_Channel7                 ((DMA1_Channel7_TypeDef*)DMA1_Channel7_BASE)
+#define DMA1_BASE            (0x40020000)
+#define DMA1                 ((DMA_TypeDef*)DMA1_BASE)
+
+#define DMA2_BASE            (0x40020400)
+#define DMA2                 ((DMA_TypeDef*)DMA2_BASE)
+
 /*
- * DMA2 Channel4 and DMA2 Channel5 global
-        interrupt
- */
-typedef struct {
-
-} DMA1_Typedef
-
-#define DMA2_Channel4_5_BASE            (0x40020400)
-#define DMA2_Channel4_5                 ((DMA1_TypeDef*)DMA2_Channel4_5_BASE)
-/*
- * SDIO global interrupt
+ * Secure digital input/output
+      interface
  */
 typedef struct {
     /**
@@ -627,13 +627,13 @@ typedef struct {
     */
     volatile uint32_t FIFO;
 
-} SDIO_Typedef
+} SDIO_Typedef;
 
 #define SDIO_BASE            (0x40018000)
 #define SDIO                 ((SDIO_TypeDef*)SDIO_BASE)
+
 /*
- * RTC Alarms through EXTI line
-        interrupt
+ * Real time clock
  */
 typedef struct {
     /**
@@ -681,10 +681,11 @@ typedef struct {
     */
     volatile uint32_t ALRL;
 
-} RTCAlarm_Typedef
+} RTC_Typedef;
 
-#define RTCAlarm_BASE            (0x40002800)
-#define RTCAlarm                 ((RTCAlarm_TypeDef*)RTCAlarm_BASE)
+#define RTC_BASE            (0x40002800)
+#define RTC                 ((RTC_TypeDef*)RTC_BASE)
+
 /*
  * Backup registers
  */
@@ -873,10 +874,11 @@ typedef struct {
     */
     volatile uint32_t CSR;
 
-} BKP_Typedef
+} BKP_Typedef;
 
 #define BKP_BASE            (0x40006C00)
 #define BKP                 ((BKP_TypeDef*)BKP_BASE)
+
 /*
  * Independent watchdog
  */
@@ -898,12 +900,13 @@ typedef struct {
     */
     volatile uint32_t SR;
 
-} IWDG_Typedef
+} IWDG_Typedef;
 
 #define IWDG_BASE            (0x40003000)
 #define IWDG                 ((IWDG_TypeDef*)IWDG_BASE)
+
 /*
- * Window Watchdog interrupt
+ * Window watchdog
  */
 typedef struct {
     /**
@@ -920,12 +923,13 @@ typedef struct {
     */
     volatile uint32_t SR;
 
-} WWDG_Typedef
+} WWDG_Typedef;
 
 #define WWDG_BASE            (0x40002C00)
 #define WWDG                 ((WWDG_TypeDef*)WWDG_BASE)
+
 /*
- * TIM1 Capture Compare interrupt
+ * Advanced timer
  */
 typedef struct {
     /**
@@ -1022,329 +1026,52 @@ typedef struct {
     */
     volatile uint32_t BDTR;
 
-} TIM1_CC_Typedef
+} TIM_Typedef;
 
-#define TIM1_CC_BASE            (0x40012C00)
-#define TIM1_CC                 ((TIM1_CC_TypeDef*)TIM1_CC_BASE)
-/*
- * TIM8 Capture Compare interrupt
- */
-typedef struct {
+#define TIM1_BASE            (0x40012C00)
+#define TIM1                 ((TIM_TypeDef*)TIM1_BASE)
 
-} TIM1_Typedef
-
-#define TIM8_CC_BASE            (0x40013400)
-#define TIM8_CC                 ((TIM1_TypeDef*)TIM8_CC_BASE)
-/*
- * TIM2 global interrupt
- */
-typedef struct {
-    /**
-    * control register 1
-    */
-    volatile uint32_t CR1;
-    /**
-    * control register 2
-    */
-    volatile uint32_t CR2;
-    /**
-    * slave mode control register
-    */
-    volatile uint32_t SMCR;
-    /**
-    * DMA/Interrupt enable register
-    */
-    volatile uint32_t DIER;
-    /**
-    * status register
-    */
-    volatile uint32_t SR;
-    /**
-    * event generation register
-    */
-    volatile uint32_t EGR;
-    /**
-    * capture/compare mode register 1 (output
-          mode)
-    */
-    volatile uint32_t CCMR1_Output;
-    /**
-    * capture/compare mode register 1 (input
-          mode)
-    */
-    volatile uint32_t CCMR1_Input;
-    /**
-    * capture/compare mode register 2 (output
-          mode)
-    */
-    volatile uint32_t CCMR2_Output;
-    /**
-    * capture/compare mode register 2 (input
-          mode)
-    */
-    volatile uint32_t CCMR2_Input;
-    /**
-    * capture/compare enable
-          register
-    */
-    volatile uint32_t CCER;
-    /**
-    * counter
-    */
-    volatile uint32_t CNT;
-    /**
-    * prescaler
-    */
-    volatile uint32_t PSC;
-    /**
-    * auto-reload register
-    */
-    volatile uint32_t ARR;
-    /**
-    * capture/compare register 1
-    */
-    volatile uint32_t CCR1;
-    /**
-    * capture/compare register 2
-    */
-    volatile uint32_t CCR2;
-    /**
-    * capture/compare register 3
-    */
-    volatile uint32_t CCR3;
-    /**
-    * capture/compare register 4
-    */
-    volatile uint32_t CCR4;
-    /**
-    * DMA control register
-    */
-    volatile uint32_t DCR;
-    /**
-    * DMA address for full transfer
-    */
-    volatile uint32_t DMAR;
-
-} TIM2_Typedef
+#define TIM8_BASE            (0x40013400)
+#define TIM8                 ((TIM_TypeDef*)TIM8_BASE)
 
 #define TIM2_BASE            (0x40000000)
-#define TIM2                 ((TIM2_TypeDef*)TIM2_BASE)
-/*
- * TIM3 global interrupt
- */
-typedef struct {
-
-} TIM2_Typedef
+#define TIM2                 ((TIM_TypeDef*)TIM2_BASE)
 
 #define TIM3_BASE            (0x40000400)
-#define TIM3                 ((TIM2_TypeDef*)TIM3_BASE)
-#define TIM4_BASE            (0x40000800)
-#define TIM4                 ((TIM2_TypeDef *)TIM4_BASE)
-#define TIM5_BASE            (0x40000C00)
-#define TIM5                 ((TIM2_TypeDef *)TIM5_BASE)
-/*
- * General purpose timer
- */
-typedef struct {
-    /**
-    * control register 1
-    */
-    volatile uint32_t CR1;
-    /**
-    * control register 2
-    */
-    volatile uint32_t CR2;
-    /**
-    * slave mode control register
-    */
-    volatile uint32_t SMCR;
-    /**
-    * DMA/Interrupt enable register
-    */
-    volatile uint32_t DIER;
-    /**
-    * status register
-    */
-    volatile uint32_t SR;
-    /**
-    * event generation register
-    */
-    volatile uint32_t EGR;
-    /**
-    * capture/compare mode register 1 (output
-          mode)
-    */
-    volatile uint32_t CCMR1_Output;
-    /**
-    * capture/compare mode register 1 (input
-          mode)
-    */
-    volatile uint32_t CCMR1_Input;
-    /**
-    * capture/compare enable
-          register
-    */
-    volatile uint32_t CCER;
-    /**
-    * counter
-    */
-    volatile uint32_t CNT;
-    /**
-    * prescaler
-    */
-    volatile uint32_t PSC;
-    /**
-    * auto-reload register
-    */
-    volatile uint32_t ARR;
-    /**
-    * capture/compare register 1
-    */
-    volatile uint32_t CCR1;
-    /**
-    * capture/compare register 2
-    */
-    volatile uint32_t CCR2;
+#define TIM3                 ((TIM_TypeDef*)TIM3_BASE)
 
-} TIM9_Typedef
+#define TIM4_BASE            (0x40000800)
+#define TIM4                 ((TIM_TypeDef*)TIM4_BASE)
+
+#define TIM5_BASE            (0x40000C00)
+#define TIM5                 ((TIM_TypeDef*)TIM5_BASE)
 
 #define TIM9_BASE            (0x40014C00)
-#define TIM9                 ((TIM9_TypeDef*)TIM9_BASE)
-/*
- * 
- */
-typedef struct {
-
-} TIM9_Typedef
+#define TIM9                 ((TIM_TypeDef*)TIM9_BASE)
 
 #define TIM12_BASE            (0x40001800)
-#define TIM12                 ((TIM9_TypeDef*)TIM12_BASE)
-/*
- * TIM1 Update interrupt
- */
-typedef struct {
-    /**
-    * control register 1
-    */
-    volatile uint32_t CR1;
-    /**
-    * control register 2
-    */
-    volatile uint32_t CR2;
-    /**
-    * DMA/Interrupt enable register
-    */
-    volatile uint32_t DIER;
-    /**
-    * status register
-    */
-    volatile uint32_t SR;
-    /**
-    * event generation register
-    */
-    volatile uint32_t EGR;
-    /**
-    * capture/compare mode register (output
-          mode)
-    */
-    volatile uint32_t CCMR1_Output;
-    /**
-    * capture/compare mode register (input
-          mode)
-    */
-    volatile uint32_t CCMR1_Input;
-    /**
-    * capture/compare enable
-          register
-    */
-    volatile uint32_t CCER;
-    /**
-    * counter
-    */
-    volatile uint32_t CNT;
-    /**
-    * prescaler
-    */
-    volatile uint32_t PSC;
-    /**
-    * auto-reload register
-    */
-    volatile uint32_t ARR;
-    /**
-    * capture/compare register 1
-    */
-    volatile uint32_t CCR1;
+#define TIM12                 ((TIM_TypeDef*)TIM12_BASE)
 
-} TIM1_UP_Typedef
+#define TIM10_BASE            (0x40015000)
+#define TIM10                 ((TIM_TypeDef*)TIM10_BASE)
 
-#define TIM1_UP_BASE            (0x40015000)
-#define TIM1_UP                 ((TIM1_UP_TypeDef*)TIM1_UP_BASE)
-/*
- * TIM1 Trigger and Commutation
-        interrupts
- */
-typedef struct {
+#define TIM11_BASE            (0x40015400)
+#define TIM11                 ((TIM_TypeDef*)TIM11_BASE)
 
-} TIM10_Typedef
-
-#define TIM1_TRG_COM_BASE            (0x40015400)
-#define TIM1_TRG_COM                 ((TIM10_TypeDef*)TIM1_TRG_COM_BASE)
 #define TIM13_BASE            (0x40001C00)
-#define TIM13                 ((TIM10_TypeDef *)TIM13_BASE)
-#define TIM14_BASE            (0x40002000)
-#define TIM14                 ((TIM10_TypeDef *)TIM14_BASE)
-/*
- * TIM6 global interrupt
- */
-typedef struct {
-    /**
-    * control register 1
-    */
-    volatile uint32_t CR1;
-    /**
-    * control register 2
-    */
-    volatile uint32_t CR2;
-    /**
-    * DMA/Interrupt enable register
-    */
-    volatile uint32_t DIER;
-    /**
-    * status register
-    */
-    volatile uint32_t SR;
-    /**
-    * event generation register
-    */
-    volatile uint32_t EGR;
-    /**
-    * counter
-    */
-    volatile uint32_t CNT;
-    /**
-    * prescaler
-    */
-    volatile uint32_t PSC;
-    /**
-    * auto-reload register
-    */
-    volatile uint32_t ARR;
+#define TIM13                 ((TIM_TypeDef*)TIM13_BASE)
 
-} TIM6_Typedef
+#define TIM14_BASE            (0x40002000)
+#define TIM14                 ((TIM_TypeDef*)TIM14_BASE)
 
 #define TIM6_BASE            (0x40001000)
-#define TIM6                 ((TIM6_TypeDef*)TIM6_BASE)
-/*
- * TIM7 global interrupt
- */
-typedef struct {
-
-} TIM6_Typedef
+#define TIM6                 ((TIM_TypeDef*)TIM6_BASE)
 
 #define TIM7_BASE            (0x40001400)
-#define TIM7                 ((TIM6_TypeDef*)TIM7_BASE)
+#define TIM7                 ((TIM_TypeDef*)TIM7_BASE)
+
 /*
- * I2C1 error interrupt
+ * Inter integrated circuit
  */
 typedef struct {
     /**
@@ -1384,21 +1111,16 @@ typedef struct {
     */
     volatile uint32_t TRISE;
 
-} I2C1_ER_Typedef
+} I2C_Typedef;
 
-#define I2C1_ER_BASE            (0x40005400)
-#define I2C1_ER                 ((I2C1_ER_TypeDef*)I2C1_ER_BASE)
+#define I2C1_BASE            (0x40005400)
+#define I2C1                 ((I2C_TypeDef*)I2C1_BASE)
+
+#define I2C2_BASE            (0x40005800)
+#define I2C2                 ((I2C_TypeDef*)I2C2_BASE)
+
 /*
- * I2C2 error interrupt
- */
-typedef struct {
-
-} I2C1_Typedef
-
-#define I2C2_ER_BASE            (0x40005800)
-#define I2C2_ER                 ((I2C1_TypeDef*)I2C2_ER_BASE)
-/*
- * SPI1 global interrupt
+ * Serial peripheral interface
  */
 typedef struct {
     /**
@@ -1438,23 +1160,20 @@ typedef struct {
     */
     volatile uint32_t I2SPR;
 
-} SPI1_Typedef
+} SPI_Typedef;
 
 #define SPI1_BASE            (0x40013000)
-#define SPI1                 ((SPI1_TypeDef*)SPI1_BASE)
-/*
- * SPI2 global interrupt
- */
-typedef struct {
-
-} SPI1_Typedef
+#define SPI1                 ((SPI_TypeDef*)SPI1_BASE)
 
 #define SPI2_BASE            (0x40003800)
-#define SPI2                 ((SPI1_TypeDef*)SPI2_BASE)
+#define SPI2                 ((SPI_TypeDef*)SPI2_BASE)
+
 #define SPI3_BASE            (0x40003C00)
-#define SPI3                 ((SPI1_TypeDef *)SPI3_BASE)
+#define SPI3                 ((SPI_TypeDef*)SPI3_BASE)
+
 /*
- * USART1 global interrupt
+ * Universal synchronous asynchronous receiver
+      transmitter
  */
 typedef struct {
     /**
@@ -1487,116 +1206,17 @@ typedef struct {
     */
     volatile uint32_t GTPR;
 
-} USART1_Typedef
+} USART_Typedef;
 
 #define USART1_BASE            (0x40013800)
-#define USART1                 ((USART1_TypeDef*)USART1_BASE)
-/*
- * USART2 global interrupt
- */
-typedef struct {
-
-} USART1_Typedef
+#define USART1                 ((USART_TypeDef*)USART1_BASE)
 
 #define USART2_BASE            (0x40004400)
-#define USART2                 ((USART1_TypeDef*)USART2_BASE)
+#define USART2                 ((USART_TypeDef*)USART2_BASE)
+
 #define USART3_BASE            (0x40004800)
-#define USART3                 ((USART1_TypeDef *)USART3_BASE)
-/*
- * ADC1 and ADC2 global interrupt
- */
-typedef struct {
-    /**
-    * status register
-    */
-    volatile uint32_t SR;
-    /**
-    * control register 1
-    */
-    volatile uint32_t CR1;
-    /**
-    * control register 2
-    */
-    volatile uint32_t CR2;
-    /**
-    * sample time register 1
-    */
-    volatile uint32_t SMPR1;
-    /**
-    * sample time register 2
-    */
-    volatile uint32_t SMPR2;
-    /**
-    * injected channel data offset register
-          x
-    */
-    volatile uint32_t JOFR1;
-    /**
-    * injected channel data offset register
-          x
-    */
-    volatile uint32_t JOFR2;
-    /**
-    * injected channel data offset register
-          x
-    */
-    volatile uint32_t JOFR3;
-    /**
-    * injected channel data offset register
-          x
-    */
-    volatile uint32_t JOFR4;
-    /**
-    * watchdog higher threshold
-          register
-    */
-    volatile uint32_t HTR;
-    /**
-    * watchdog lower threshold
-          register
-    */
-    volatile uint32_t LTR;
-    /**
-    * regular sequence register 1
-    */
-    volatile uint32_t SQR1;
-    /**
-    * regular sequence register 2
-    */
-    volatile uint32_t SQR2;
-    /**
-    * regular sequence register 3
-    */
-    volatile uint32_t SQR3;
-    /**
-    * injected sequence register
-    */
-    volatile uint32_t JSQR;
-    /**
-    * injected data register x
-    */
-    volatile uint32_t JDR1;
-    /**
-    * injected data register x
-    */
-    volatile uint32_t JDR2;
-    /**
-    * injected data register x
-    */
-    volatile uint32_t JDR3;
-    /**
-    * injected data register x
-    */
-    volatile uint32_t JDR4;
-    /**
-    * regular data register
-    */
-    volatile uint32_t DR;
+#define USART3                 ((USART_TypeDef*)USART3_BASE)
 
-} ADC1_2_Typedef
-
-#define ADC1_2_BASE            (0x40012400)
-#define ADC1_2                 ((ADC1_2_TypeDef*)ADC1_2_BASE)
 /*
  * Analog to digital converter
  */
@@ -1688,21 +1308,19 @@ typedef struct {
     */
     volatile uint32_t DR;
 
-} ADC2_Typedef
+} ADC_Typedef;
+
+#define ADC1_BASE            (0x40012400)
+#define ADC1                 ((ADC_TypeDef*)ADC1_BASE)
 
 #define ADC2_BASE            (0x40012800)
-#define ADC2                 ((ADC2_TypeDef*)ADC2_BASE)
-/*
- * ADC3 global interrupt
- */
-typedef struct {
-
-} ADC2_Typedef
+#define ADC2                 ((ADC_TypeDef*)ADC2_BASE)
 
 #define ADC3_BASE            (0x40013C00)
-#define ADC3                 ((ADC2_TypeDef*)ADC3_BASE)
+#define ADC3                 ((ADC_TypeDef*)ADC3_BASE)
+
 /*
- * CAN SCE interrupt
+ * Controller area network
  */
 typedef struct {
     /**
@@ -1950,19 +1568,14 @@ typedef struct {
     */
     volatile uint32_t F13R2;
 
-} CAN_SCE_Typedef
+} CAN_Typedef;
 
-#define CAN_SCE_BASE            (0x40006400)
-#define CAN_SCE                 ((CAN_SCE_TypeDef*)CAN_SCE_BASE)
-/*
- * 
- */
-typedef struct {
-
-} CAN1_Typedef
+#define CAN1_BASE            (0x40006400)
+#define CAN1                 ((CAN_TypeDef*)CAN1_BASE)
 
 #define CAN2_BASE            (0x40006800)
-#define CAN2                 ((CAN1_TypeDef*)CAN2_BASE)
+#define CAN2                 ((CAN_TypeDef*)CAN2_BASE)
+
 /*
  * Digital to analog converter
  */
@@ -2034,10 +1647,11 @@ typedef struct {
     */
     volatile uint32_t DOR2;
 
-} DAC_Typedef
+} DAC_Typedef;
 
 #define DAC_BASE            (0x40007400)
 #define DAC                 ((DAC_TypeDef*)DAC_BASE)
+
 /*
  * Debug support
  */
@@ -2051,76 +1665,17 @@ typedef struct {
     */
     volatile uint32_t CR;
 
-} DBG_Typedef
+} DBG_Typedef;
 
 #define DBG_BASE            (0xE0042000)
 #define DBG                 ((DBG_TypeDef*)DBG_BASE)
-/*
- * UART4 global interrupt
- */
-typedef struct {
-    /**
-    * UART4_SR
-    */
-    volatile uint32_t SR;
-    /**
-    * UART4_DR
-    */
-    volatile uint32_t DR;
-    /**
-    * UART4_BRR
-    */
-    volatile uint32_t BRR;
-    /**
-    * UART4_CR1
-    */
-    volatile uint32_t CR1;
-    /**
-    * UART4_CR2
-    */
-    volatile uint32_t CR2;
-    /**
-    * UART4_CR3
-    */
-    volatile uint32_t CR3;
-
-} UART4_Typedef
 
 #define UART4_BASE            (0x40004C00)
-#define UART4                 ((UART4_TypeDef*)UART4_BASE)
-/*
- * UART5 global interrupt
- */
-typedef struct {
-    /**
-    * UART4_SR
-    */
-    volatile uint32_t SR;
-    /**
-    * UART4_DR
-    */
-    volatile uint32_t DR;
-    /**
-    * UART4_BRR
-    */
-    volatile uint32_t BRR;
-    /**
-    * UART4_CR1
-    */
-    volatile uint32_t CR1;
-    /**
-    * UART4_CR2
-    */
-    volatile uint32_t CR2;
-    /**
-    * UART4_CR3
-    */
-    volatile uint32_t CR3;
-
-} UART5_Typedef
+#define UART4                 ((USART_TypeDef*)UART4_BASE)
 
 #define UART5_BASE            (0x40005000)
-#define UART5                 ((UART5_TypeDef*)UART5_BASE)
+#define UART5                 ((USART_TypeDef*)UART5_BASE)
+
 /*
  * CRC calculation unit
  */
@@ -2138,12 +1693,13 @@ typedef struct {
     */
     volatile uint32_t CR;
 
-} CRC_Typedef
+} CRC_Typedef;
 
 #define CRC_BASE            (0x40023000)
 #define CRC                 ((CRC_TypeDef*)CRC_BASE)
+
 /*
- * Flash global interrupt
+ * FLASH
  */
 typedef struct {
     /**
@@ -2179,13 +1735,14 @@ typedef struct {
     */
     volatile uint32_t WRPR;
 
-} FLASH_Typedef
+} FLASH_Typedef;
 
 #define FLASH_BASE            (0x40022000)
 #define FLASH                 ((FLASH_TypeDef*)FLASH_BASE)
+
 /*
- * USB Low Priority or CAN RX0
-        interrupts
+ * Universal serial bus full-speed device
+      interface
  */
 typedef struct {
     /**
@@ -2241,10 +1798,11 @@ typedef struct {
     */
     volatile uint32_t BTABLE;
 
-} USB_LP_CAN_RX0_Typedef
+} USB_Typedef;
 
-#define USB_LP_CAN_RX0_BASE            (0x40005C00)
-#define USB_LP_CAN_RX0                 ((USB_LP_CAN_RX0_TypeDef*)USB_LP_CAN_RX0_BASE)
+#define USB_BASE            (0x40005C00)
+#define USB                 ((USB_TypeDef*)USB_BASE)
+
 /*
  * USB on the go full speed
  */
@@ -2440,331 +1998,20 @@ typedef struct {
     */
     volatile uint32_t DOEPTSIZ3;
 
-} OTG_FS_DEVICE_Typedef
+} USB_OTG_FS_Typedef;
 
 #define OTG_FS_DEVICE_BASE            (0x50000800)
-#define OTG_FS_DEVICE                 ((OTG_FS_DEVICE_TypeDef*)OTG_FS_DEVICE_BASE)
-/*
- * USB on the go full speed
- */
-typedef struct {
-    /**
-    * OTG_FS control and status register
-          (OTG_FS_GOTGCTL)
-    */
-    volatile uint32_t FS_GOTGCTL;
-    /**
-    * OTG_FS interrupt register
-          (OTG_FS_GOTGINT)
-    */
-    volatile uint32_t FS_GOTGINT;
-    /**
-    * OTG_FS AHB configuration register
-          (OTG_FS_GAHBCFG)
-    */
-    volatile uint32_t FS_GAHBCFG;
-    /**
-    * OTG_FS USB configuration register
-          (OTG_FS_GUSBCFG)
-    */
-    volatile uint32_t FS_GUSBCFG;
-    /**
-    * OTG_FS reset register
-          (OTG_FS_GRSTCTL)
-    */
-    volatile uint32_t FS_GRSTCTL;
-    /**
-    * OTG_FS core interrupt register
-          (OTG_FS_GINTSTS)
-    */
-    volatile uint32_t FS_GINTSTS;
-    /**
-    * OTG_FS interrupt mask register
-          (OTG_FS_GINTMSK)
-    */
-    volatile uint32_t FS_GINTMSK;
-    /**
-    * OTG_FS Receive status debug read(Device
-          mode)
-    */
-    volatile uint32_t FS_GRXSTSR_Device;
-    /**
-    * OTG_FS Receive status debug read(Host
-          mode)
-    */
-    volatile uint32_t FS_GRXSTSR_Host;
-    /**
-    * OTG_FS Receive FIFO size register
-          (OTG_FS_GRXFSIZ)
-    */
-    volatile uint32_t FS_GRXFSIZ;
-    /**
-    * OTG_FS non-periodic transmit FIFO size
-          register (Device mode)
-    */
-    volatile uint32_t FS_GNPTXFSIZ_Device;
-    /**
-    * OTG_FS non-periodic transmit FIFO size
-          register (Host mode)
-    */
-    volatile uint32_t FS_GNPTXFSIZ_Host;
-    /**
-    * OTG_FS non-periodic transmit FIFO/queue
-          status register (OTG_FS_GNPTXSTS)
-    */
-    volatile uint32_t FS_GNPTXSTS;
-    /**
-    * OTG_FS general core configuration register
-          (OTG_FS_GCCFG)
-    */
-    volatile uint32_t FS_GCCFG;
-    /**
-    * core ID register
-    */
-    volatile uint32_t FS_CID;
-    /**
-    * OTG_FS Host periodic transmit FIFO size
-          register (OTG_FS_HPTXFSIZ)
-    */
-    volatile uint32_t FS_HPTXFSIZ;
-    /**
-    * OTG_FS device IN endpoint transmit FIFO size
-          register (OTG_FS_DIEPTXF2)
-    */
-    volatile uint32_t FS_DIEPTXF1;
-    /**
-    * OTG_FS device IN endpoint transmit FIFO size
-          register (OTG_FS_DIEPTXF3)
-    */
-    volatile uint32_t FS_DIEPTXF2;
-    /**
-    * OTG_FS device IN endpoint transmit FIFO size
-          register (OTG_FS_DIEPTXF4)
-    */
-    volatile uint32_t FS_DIEPTXF3;
-
-} OTG_FS_GLOBAL_Typedef
+#define OTG_FS_DEVICE                 ((USB_OTG_FS_TypeDef*)OTG_FS_DEVICE_BASE)
 
 #define OTG_FS_GLOBAL_BASE            (0x50000000)
-#define OTG_FS_GLOBAL                 ((OTG_FS_GLOBAL_TypeDef*)OTG_FS_GLOBAL_BASE)
-/*
- * USB on the go full speed
- */
-typedef struct {
-    /**
-    * OTG_FS host configuration register
-          (OTG_FS_HCFG)
-    */
-    volatile uint32_t FS_HCFG;
-    /**
-    * OTG_FS Host frame interval
-          register
-    */
-    volatile uint32_t HFIR;
-    /**
-    * OTG_FS host frame number/frame time
-          remaining register (OTG_FS_HFNUM)
-    */
-    volatile uint32_t FS_HFNUM;
-    /**
-    * OTG_FS_Host periodic transmit FIFO/queue
-          status register (OTG_FS_HPTXSTS)
-    */
-    volatile uint32_t FS_HPTXSTS;
-    /**
-    * OTG_FS Host all channels interrupt
-          register
-    */
-    volatile uint32_t HAINT;
-    /**
-    * OTG_FS host all channels interrupt mask
-          register
-    */
-    volatile uint32_t HAINTMSK;
-    /**
-    * OTG_FS host port control and status register
-          (OTG_FS_HPRT)
-    */
-    volatile uint32_t FS_HPRT;
-    /**
-    * OTG_FS host channel-0 characteristics
-          register (OTG_FS_HCCHAR0)
-    */
-    volatile uint32_t FS_HCCHAR0;
-    /**
-    * OTG_FS host channel-1 characteristics
-          register (OTG_FS_HCCHAR1)
-    */
-    volatile uint32_t FS_HCCHAR1;
-    /**
-    * OTG_FS host channel-2 characteristics
-          register (OTG_FS_HCCHAR2)
-    */
-    volatile uint32_t FS_HCCHAR2;
-    /**
-    * OTG_FS host channel-3 characteristics
-          register (OTG_FS_HCCHAR3)
-    */
-    volatile uint32_t FS_HCCHAR3;
-    /**
-    * OTG_FS host channel-4 characteristics
-          register (OTG_FS_HCCHAR4)
-    */
-    volatile uint32_t FS_HCCHAR4;
-    /**
-    * OTG_FS host channel-5 characteristics
-          register (OTG_FS_HCCHAR5)
-    */
-    volatile uint32_t FS_HCCHAR5;
-    /**
-    * OTG_FS host channel-6 characteristics
-          register (OTG_FS_HCCHAR6)
-    */
-    volatile uint32_t FS_HCCHAR6;
-    /**
-    * OTG_FS host channel-7 characteristics
-          register (OTG_FS_HCCHAR7)
-    */
-    volatile uint32_t FS_HCCHAR7;
-    /**
-    * OTG_FS host channel-0 interrupt register
-          (OTG_FS_HCINT0)
-    */
-    volatile uint32_t FS_HCINT0;
-    /**
-    * OTG_FS host channel-1 interrupt register
-          (OTG_FS_HCINT1)
-    */
-    volatile uint32_t FS_HCINT1;
-    /**
-    * OTG_FS host channel-2 interrupt register
-          (OTG_FS_HCINT2)
-    */
-    volatile uint32_t FS_HCINT2;
-    /**
-    * OTG_FS host channel-3 interrupt register
-          (OTG_FS_HCINT3)
-    */
-    volatile uint32_t FS_HCINT3;
-    /**
-    * OTG_FS host channel-4 interrupt register
-          (OTG_FS_HCINT4)
-    */
-    volatile uint32_t FS_HCINT4;
-    /**
-    * OTG_FS host channel-5 interrupt register
-          (OTG_FS_HCINT5)
-    */
-    volatile uint32_t FS_HCINT5;
-    /**
-    * OTG_FS host channel-6 interrupt register
-          (OTG_FS_HCINT6)
-    */
-    volatile uint32_t FS_HCINT6;
-    /**
-    * OTG_FS host channel-7 interrupt register
-          (OTG_FS_HCINT7)
-    */
-    volatile uint32_t FS_HCINT7;
-    /**
-    * OTG_FS host channel-0 mask register
-          (OTG_FS_HCINTMSK0)
-    */
-    volatile uint32_t FS_HCINTMSK0;
-    /**
-    * OTG_FS host channel-1 mask register
-          (OTG_FS_HCINTMSK1)
-    */
-    volatile uint32_t FS_HCINTMSK1;
-    /**
-    * OTG_FS host channel-2 mask register
-          (OTG_FS_HCINTMSK2)
-    */
-    volatile uint32_t FS_HCINTMSK2;
-    /**
-    * OTG_FS host channel-3 mask register
-          (OTG_FS_HCINTMSK3)
-    */
-    volatile uint32_t FS_HCINTMSK3;
-    /**
-    * OTG_FS host channel-4 mask register
-          (OTG_FS_HCINTMSK4)
-    */
-    volatile uint32_t FS_HCINTMSK4;
-    /**
-    * OTG_FS host channel-5 mask register
-          (OTG_FS_HCINTMSK5)
-    */
-    volatile uint32_t FS_HCINTMSK5;
-    /**
-    * OTG_FS host channel-6 mask register
-          (OTG_FS_HCINTMSK6)
-    */
-    volatile uint32_t FS_HCINTMSK6;
-    /**
-    * OTG_FS host channel-7 mask register
-          (OTG_FS_HCINTMSK7)
-    */
-    volatile uint32_t FS_HCINTMSK7;
-    /**
-    * OTG_FS host channel-0 transfer size
-          register
-    */
-    volatile uint32_t FS_HCTSIZ0;
-    /**
-    * OTG_FS host channel-1 transfer size
-          register
-    */
-    volatile uint32_t FS_HCTSIZ1;
-    /**
-    * OTG_FS host channel-2 transfer size
-          register
-    */
-    volatile uint32_t FS_HCTSIZ2;
-    /**
-    * OTG_FS host channel-3 transfer size
-          register
-    */
-    volatile uint32_t FS_HCTSIZ3;
-    /**
-    * OTG_FS host channel-x transfer size
-          register
-    */
-    volatile uint32_t FS_HCTSIZ4;
-    /**
-    * OTG_FS host channel-5 transfer size
-          register
-    */
-    volatile uint32_t FS_HCTSIZ5;
-    /**
-    * OTG_FS host channel-6 transfer size
-          register
-    */
-    volatile uint32_t FS_HCTSIZ6;
-    /**
-    * OTG_FS host channel-7 transfer size
-          register
-    */
-    volatile uint32_t FS_HCTSIZ7;
-
-} OTG_FS_HOST_Typedef
+#define OTG_FS_GLOBAL                 ((USB_OTG_FS_TypeDef*)OTG_FS_GLOBAL_BASE)
 
 #define OTG_FS_HOST_BASE            (0x50000400)
-#define OTG_FS_HOST                 ((OTG_FS_HOST_TypeDef*)OTG_FS_HOST_BASE)
-/*
- * USB on the go full speed
- */
-typedef struct {
-    /**
-    * OTG_FS power and clock gating control
-          register
-    */
-    volatile uint32_t FS_PCGCCTL;
-
-} OTG_FS_PWRCLK_Typedef
+#define OTG_FS_HOST                 ((USB_OTG_FS_TypeDef*)OTG_FS_HOST_BASE)
 
 #define OTG_FS_PWRCLK_BASE            (0x50000E00)
-#define OTG_FS_PWRCLK                 ((OTG_FS_PWRCLK_TypeDef*)OTG_FS_PWRCLK_BASE)
+#define OTG_FS_PWRCLK                 ((USB_OTG_FS_TypeDef*)OTG_FS_PWRCLK_BASE)
+
 /*
  * Ethernet: MAC management counters
  */
@@ -2825,245 +2072,20 @@ typedef struct {
     */
     volatile uint32_t MMCRGUFCR;
 
-} ETHERNET_MMC_Typedef
+} ETHERNET_Typedef;
 
 #define ETHERNET_MMC_BASE            (0x40028100)
-#define ETHERNET_MMC                 ((ETHERNET_MMC_TypeDef*)ETHERNET_MMC_BASE)
-/*
- * Ethernet: media access control
- */
-typedef struct {
-    /**
-    * Ethernet MAC configuration register
-          (ETH_MACCR)
-    */
-    volatile uint32_t MACCR;
-    /**
-    * Ethernet MAC frame filter register
-          (ETH_MACCFFR)
-    */
-    volatile uint32_t MACFFR;
-    /**
-    * Ethernet MAC hash table high
-          register
-    */
-    volatile uint32_t MACHTHR;
-    /**
-    * Ethernet MAC hash table low
-          register
-    */
-    volatile uint32_t MACHTLR;
-    /**
-    * Ethernet MAC MII address register
-          (ETH_MACMIIAR)
-    */
-    volatile uint32_t MACMIIAR;
-    /**
-    * Ethernet MAC MII data register
-          (ETH_MACMIIDR)
-    */
-    volatile uint32_t MACMIIDR;
-    /**
-    * Ethernet MAC flow control register
-          (ETH_MACFCR)
-    */
-    volatile uint32_t MACFCR;
-    /**
-    * Ethernet MAC VLAN tag register
-          (ETH_MACVLANTR)
-    */
-    volatile uint32_t MACVLANTR;
-    /**
-    * Ethernet MAC remote wakeup frame filter
-          register (ETH_MACRWUFFR)
-    */
-    volatile uint32_t MACRWUFFR;
-    /**
-    * Ethernet MAC PMT control and status register
-          (ETH_MACPMTCSR)
-    */
-    volatile uint32_t MACPMTCSR;
-    /**
-    * Ethernet MAC interrupt status register
-          (ETH_MACSR)
-    */
-    volatile uint32_t MACSR;
-    /**
-    * Ethernet MAC interrupt mask register
-          (ETH_MACIMR)
-    */
-    volatile uint32_t MACIMR;
-    /**
-    * Ethernet MAC address 0 high register
-          (ETH_MACA0HR)
-    */
-    volatile uint32_t MACA0HR;
-    /**
-    * Ethernet MAC address 0 low
-          register
-    */
-    volatile uint32_t MACA0LR;
-    /**
-    * Ethernet MAC address 1 high register
-          (ETH_MACA1HR)
-    */
-    volatile uint32_t MACA1HR;
-    /**
-    * Ethernet MAC address1 low
-          register
-    */
-    volatile uint32_t MACA1LR;
-    /**
-    * Ethernet MAC address 2 high register
-          (ETH_MACA2HR)
-    */
-    volatile uint32_t MACA2HR;
-    /**
-    * Ethernet MAC address 2 low
-          register
-    */
-    volatile uint32_t MACA2LR;
-    /**
-    * Ethernet MAC address 3 high register
-          (ETH_MACA3HR)
-    */
-    volatile uint32_t MACA3HR;
-    /**
-    * Ethernet MAC address 3 low
-          register
-    */
-    volatile uint32_t MACA3LR;
-
-} ETHERNET_MAC_Typedef
+#define ETHERNET_MMC                 ((ETHERNET_TypeDef*)ETHERNET_MMC_BASE)
 
 #define ETHERNET_MAC_BASE            (0x40028000)
-#define ETHERNET_MAC                 ((ETHERNET_MAC_TypeDef*)ETHERNET_MAC_BASE)
-/*
- * Ethernet: Precision time protocol
- */
-typedef struct {
-    /**
-    * Ethernet PTP time stamp control register
-          (ETH_PTPTSCR)
-    */
-    volatile uint32_t PTPTSCR;
-    /**
-    * Ethernet PTP subsecond increment
-          register
-    */
-    volatile uint32_t PTPSSIR;
-    /**
-    * Ethernet PTP time stamp high
-          register
-    */
-    volatile uint32_t PTPTSHR;
-    /**
-    * Ethernet PTP time stamp low register
-          (ETH_PTPTSLR)
-    */
-    volatile uint32_t PTPTSLR;
-    /**
-    * Ethernet PTP time stamp high update
-          register
-    */
-    volatile uint32_t PTPTSHUR;
-    /**
-    * Ethernet PTP time stamp low update register
-          (ETH_PTPTSLUR)
-    */
-    volatile uint32_t PTPTSLUR;
-    /**
-    * Ethernet PTP time stamp addend
-          register
-    */
-    volatile uint32_t PTPTSAR;
-    /**
-    * Ethernet PTP target time high
-          register
-    */
-    volatile uint32_t PTPTTHR;
-    /**
-    * Ethernet PTP target time low
-          register
-    */
-    volatile uint32_t PTPTTLR;
-
-} ETHERNET_PTP_Typedef
+#define ETHERNET_MAC                 ((ETHERNET_TypeDef*)ETHERNET_MAC_BASE)
 
 #define ETHERNET_PTP_BASE            (0x40028700)
-#define ETHERNET_PTP                 ((ETHERNET_PTP_TypeDef*)ETHERNET_PTP_BASE)
-/*
- * Ethernet: DMA controller operation
- */
-typedef struct {
-    /**
-    * Ethernet DMA bus mode register
-    */
-    volatile uint32_t DMABMR;
-    /**
-    * Ethernet DMA transmit poll demand
-          register
-    */
-    volatile uint32_t DMATPDR;
-    /**
-    * EHERNET DMA receive poll demand
-          register
-    */
-    volatile uint32_t DMARPDR;
-    /**
-    * Ethernet DMA receive descriptor list address
-          register
-    */
-    volatile uint32_t DMARDLAR;
-    /**
-    * Ethernet DMA transmit descriptor list
-          address register
-    */
-    volatile uint32_t DMATDLAR;
-    /**
-    * Ethernet DMA status register
-    */
-    volatile uint32_t DMASR;
-    /**
-    * Ethernet DMA operation mode
-          register
-    */
-    volatile uint32_t DMAOMR;
-    /**
-    * Ethernet DMA interrupt enable
-          register
-    */
-    volatile uint32_t DMAIER;
-    /**
-    * Ethernet DMA missed frame and buffer
-          overflow counter register
-    */
-    volatile uint32_t DMAMFBOCR;
-    /**
-    * Ethernet DMA current host transmit
-          descriptor register
-    */
-    volatile uint32_t DMACHTDR;
-    /**
-    * Ethernet DMA current host receive descriptor
-          register
-    */
-    volatile uint32_t DMACHRDR;
-    /**
-    * Ethernet DMA current host transmit buffer
-          address register
-    */
-    volatile uint32_t DMACHTBAR;
-    /**
-    * Ethernet DMA current host receive buffer
-          address register
-    */
-    volatile uint32_t DMACHRBAR;
-
-} ETHERNET_DMA_Typedef
+#define ETHERNET_PTP                 ((ETHERNET_TypeDef*)ETHERNET_PTP_BASE)
 
 #define ETHERNET_DMA_BASE            (0x40029000)
-#define ETHERNET_DMA                 ((ETHERNET_DMA_TypeDef*)ETHERNET_DMA_BASE)
+#define ETHERNET_DMA                 ((ETHERNET_TypeDef*)ETHERNET_DMA_BASE)
+
 /*
  * Nested Vectored Interrupt
       Controller
@@ -3174,10 +2196,11 @@ typedef struct {
     */
     volatile uint32_t IPR14;
 
-} NVIC_Typedef
+} NVIC_Typedef;
 
 #define NVIC_BASE            (0xE000E100)
 #define NVIC                 ((NVIC_TypeDef*)NVIC_BASE)
+
 /*
  * Memory protection unit
  */
@@ -3205,10 +2228,11 @@ typedef struct {
     */
     volatile uint32_t MPU_RASR;
 
-} MPU_Typedef
+} MPU_Typedef;
 
 #define MPU_BASE            (0xE000ED90)
 #define MPU                 ((MPU_TypeDef*)MPU_BASE)
+
 /*
  * System control block ACTLR
  */
@@ -3218,99 +2242,17 @@ typedef struct {
     */
     volatile uint32_t ACTRL;
 
-} SCB_ACTRL_Typedef
+} SCB_Typedef;
 
 #define SCB_ACTRL_BASE            (0xE000E008)
-#define SCB_ACTRL                 ((SCB_ACTRL_TypeDef*)SCB_ACTRL_BASE)
-/*
- * Nested vectored interrupt
-      controller
- */
-typedef struct {
-    /**
-    * Software trigger interrupt
-          register
-    */
-    volatile uint32_t STIR;
-
-} NVIC_STIR_Typedef
+#define SCB_ACTRL                 ((SCB_TypeDef*)SCB_ACTRL_BASE)
 
 #define NVIC_STIR_BASE            (0xE000EF00)
-#define NVIC_STIR                 ((NVIC_STIR_TypeDef*)NVIC_STIR_BASE)
-/*
- * System control block
- */
-typedef struct {
-    /**
-    * CPUID base register
-    */
-    volatile uint32_t CPUID;
-    /**
-    * Interrupt control and state
-          register
-    */
-    volatile uint32_t ICSR;
-    /**
-    * Vector table offset register
-    */
-    volatile uint32_t VTOR;
-    /**
-    * Application interrupt and reset control
-          register
-    */
-    volatile uint32_t AIRCR;
-    /**
-    * System control register
-    */
-    volatile uint32_t SCR;
-    /**
-    * Configuration and control
-          register
-    */
-    volatile uint32_t CCR;
-    /**
-    * System handler priority
-          registers
-    */
-    volatile uint32_t SHPR1;
-    /**
-    * System handler priority
-          registers
-    */
-    volatile uint32_t SHPR2;
-    /**
-    * System handler priority
-          registers
-    */
-    volatile uint32_t SHPR3;
-    /**
-    * System handler control and state
-          register
-    */
-    volatile uint32_t SHCRS;
-    /**
-    * Configurable fault status
-          register
-    */
-    volatile uint32_t CFSR_UFSR_BFSR_MMFSR;
-    /**
-    * Hard fault status register
-    */
-    volatile uint32_t HFSR;
-    /**
-    * Memory management fault address
-          register
-    */
-    volatile uint32_t MMFAR;
-    /**
-    * Bus fault address register
-    */
-    volatile uint32_t BFAR;
-
-} SCB_Typedef
+#define NVIC_STIR                 ((NVIC_TypeDef*)NVIC_STIR_BASE)
 
 #define SCB_BASE            (0xE000ED00)
 #define SCB                 ((SCB_TypeDef*)SCB_BASE)
+
 /*
  * SysTick timer
  */
@@ -3334,7 +2276,7 @@ typedef struct {
     */
     volatile uint32_t CALIB;
 
-} STK_Typedef
+} STK_Typedef;
 
 #define STK_BASE            (0xE000E010)
 #define STK                 ((STK_TypeDef*)STK_BASE)

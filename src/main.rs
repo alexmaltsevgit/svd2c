@@ -14,7 +14,7 @@ struct Device {
 }
 
 #[derive(Default, Clone)]
-struct PeripheralGroup {
+struct Peripheral {
     name: String,
     description: String,
     base_address: String,
@@ -46,6 +46,7 @@ enum TranspilerContext {
     Cpu,
     Peripherals,
     PeripheralGroup,
+    Interrupt,
     Register,
     Field,
 }
@@ -87,7 +88,15 @@ impl Writer {
             .expect("Write error");
     }
 
-    fn w_peripheral(&mut self, peripheral: &PeripheralGroup) {
+    fn w_peripheral(&mut self, peripheral: &Peripheral) {
+        println!(
+            "{}",
+            peripheral
+                .group_name
+                .clone()
+                .unwrap_or("  -   ".into())
+                .clone()
+        );
         let Some(gp) = peripheral.group_name.clone() else {
             return self.w_new_peripheral(peripheral);
         };
@@ -100,7 +109,7 @@ impl Writer {
         }
     }
 
-    fn w_new_peripheral(&mut self, peripheral: &PeripheralGroup) {
+    fn w_new_peripheral(&mut self, peripheral: &Peripheral) {
         let t = self.load_template("new_peripheral.h");
 
         let registers = self.make_registers(&peripheral.registers);
@@ -120,7 +129,7 @@ impl Writer {
             .expect("Write error");
     }
 
-    fn w_existing_peripheral(&mut self, peripheral: &PeripheralGroup) {
+    fn w_existing_peripheral(&mut self, peripheral: &Peripheral) {
         let t = self.load_template("existing_peripheral.h");
 
         let mut vars = HashMap::new();
@@ -167,9 +176,9 @@ struct Parser {
 
     device: Device,
 
-    peripheral_groups: HashMap<String, PeripheralGroup>,
+    derivers: HashMap<String, Peripheral>,
 
-    new_peripheral: Option<PeripheralGroup>,
+    new_peripheral: Option<Peripheral>,
     new_register: Option<Register>,
     new_field: Option<Field>,
 }
@@ -182,7 +191,7 @@ impl Parser {
             device: Device {
                 name: "Unknown".into(),
             },
-            peripheral_groups: HashMap::new(),
+            derivers: HashMap::new(),
             new_peripheral: None,
             new_register: None,
             new_field: None,
@@ -195,10 +204,8 @@ impl Parser {
             .as_ref()
             .expect("Tried to write peripheral in invalid state");
 
-        if let Some(gp) = &p.group_name
-            && !self.peripheral_groups.contains_key(gp)
-        {
-            self.peripheral_groups.insert(gp.to_string(), p.clone());
+        if !self.derivers.contains_key(&p.name) {
+            self.derivers.insert(p.name.to_string(), p.clone());
         }
 
         self.new_peripheral = None;
@@ -293,7 +300,7 @@ fn main() {
                     b"peripheral" => {
                         parser.context = TranspilerContext::PeripheralGroup;
 
-                        let group_name = event
+                        let deriver_name = event
                             .try_get_attribute("derivedFrom")
                             .expect("Attribute error")
                             .map(|attr| {
@@ -302,10 +309,17 @@ fn main() {
                                     .to_owned()
                             });
 
-                        parser.new_peripheral = Some(PeripheralGroup {
-                            group_name,
-                            ..Default::default()
-                        });
+                        parser.new_peripheral = Some(
+                            deriver_name
+                                .as_ref()
+                                .and_then(|dn| parser.derivers.get(dn))
+                                .cloned()
+                                .unwrap_or_default(),
+                        );
+                    }
+
+                    b"interrupt" => {
+                        parser.context = TranspilerContext::Interrupt;
                     }
 
                     b"register" => {
@@ -399,7 +413,7 @@ fn main() {
                         _ => (),
                     },
 
-                    "group_name" => match parser.context {
+                    "groupName" => match parser.context {
                         TranspilerContext::PeripheralGroup => {
                             parser
                                 .new_peripheral
@@ -410,7 +424,7 @@ fn main() {
                         _ => (),
                     },
 
-                    "address_offset" => match parser.context {
+                    "addressOffset" => match parser.context {
                         TranspilerContext::Register => {
                             parser
                                 .new_register
@@ -434,7 +448,7 @@ fn main() {
                         _ => (),
                     },
 
-                    "reset_value" => match parser.context {
+                    "resetValue" => match parser.context {
                         TranspilerContext::Register => {
                             parser
                                 .new_register
@@ -445,7 +459,7 @@ fn main() {
                         _ => (),
                     },
 
-                    "bit_offset" => match parser.context {
+                    "bitOffset" => match parser.context {
                         TranspilerContext::Register => {
                             parser
                                 .new_field
@@ -457,7 +471,7 @@ fn main() {
                         _ => (),
                     },
 
-                    "bit_width" => match parser.context {
+                    "bitWidth" => match parser.context {
                         TranspilerContext::Register => {
                             parser
                                 .new_field
