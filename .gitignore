@@ -1,7 +1,1 @@
-# Zig build artifacts
-.zig-cache/
-zig-cache/
-zig-out/
-
-# Zig package manager dependencies
-zig-pkg/
+/target
