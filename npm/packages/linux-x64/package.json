@@ -1,0 +1,15 @@
+{
+  "name": "svd2c-linux-x64",
+  "version": "0.1.0",
+  "description": "Linux x64 native binary for svd2c",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexmaltsevgit/svd2c.git"
+  },
+  "os": ["linux"],
+  "cpu": ["x64"],
+  "files": [
+    "bin"
+  ]
+}

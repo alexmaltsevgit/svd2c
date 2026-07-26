@@ -1,3 +1,8 @@
 /target
 /suits
 /out
+/dist
+/npm/packages/*/bin
+node_modules
+*.tgz
+.DS_Store
