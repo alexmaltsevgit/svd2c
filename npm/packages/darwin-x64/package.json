@@ -1,6 +1,6 @@
 {
   "name": "svd2c-darwin-x64",
-  "version": "0.1.3",
+  "version": "0.1.5",
   "description": "macOS Intel x64 native binary for svd2c",
   "license": "MIT",
   "repository": {
