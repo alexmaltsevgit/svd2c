@@ -107,6 +107,19 @@ impl Writer {
 
         let registers = self.make_registers(&peripheral.registers);
 
+        let mut all_fields = String::with_capacity(peripheral.registers.len() * 64);
+        for reg in peripheral.registers.iter() {
+            let fields = self.make_fields(
+                &peripheral
+                    .group_name
+                    .clone()
+                    .unwrap_or(peripheral.name.clone()),
+                &reg.name,
+                &reg.fields,
+            );
+            all_fields.push_str(fields.as_str());
+        }
+
         let mut vars = HashMap::new();
         vars.insert("name".to_string(), peripheral.name.as_str());
         vars.insert("base_address".to_string(), peripheral.base_address.as_str());
@@ -119,6 +132,10 @@ impl Writer {
 
         self.output
             .write_all(&strfmt(&t, &vars).unwrap().into_bytes())
+            .expect("Write error");
+
+        self.output
+            .write_all(all_fields.as_bytes())
             .expect("Write error");
     }
 
@@ -196,6 +213,28 @@ impl Writer {
 
                 out.push_str(&strfmt(&t, &vars).unwrap());
             }
+        }
+
+        out
+    }
+
+    fn make_fields(&mut self, group_name: &str, register_name: &str, fields: &[Field]) -> String {
+        let t = self.load_template("field.h");
+        let mut out = String::with_capacity(t.capacity() * fields.len());
+
+        for field in fields.iter() {
+            let offset = field.bit_offset.to_string();
+            let width = format!("0x{:x}", field.bit_width);
+
+            let mut vars = HashMap::new();
+            vars.insert("description".to_string(), field.description.as_str());
+            vars.insert("group_name".to_string(), group_name);
+            vars.insert("register_name".to_string(), register_name);
+            vars.insert("field_name".to_string(), field.name.as_str());
+            vars.insert("offset".to_string(), offset.as_str());
+            vars.insert("width".to_string(), width.as_str());
+
+            out.push_str(&strfmt(&t, &vars).unwrap());
         }
 
         out
@@ -390,6 +429,9 @@ fn main() {
 
             Ok(Event::Text(event)) => {
                 let text = event.decode().unwrap().into_owned();
+                let is_hex = text.starts_with("0x");
+                let radix = if is_hex { 16 } else { 10 };
+
                 match parser.field_name.as_str() {
                     "name" => match parser.context {
                         TranspilerContext::Device => parser.device.name = text,
@@ -472,7 +514,7 @@ fn main() {
                                 .as_mut()
                                 .expect("'address_offset' found outside of Register")
                                 .address_offset =
-                                u32::from_str_radix(text.strip_prefix("0x").unwrap_or(&text), 16)
+                                u32::from_str_radix(text.strip_prefix("0x").unwrap_or(&text), radix)
                                     .expect("Could not parse size")
                         }
                         _ => (),
@@ -485,7 +527,7 @@ fn main() {
                                 .as_mut()
                                 .expect("'size' found outside of Register")
                                 .size_bits =
-                                u8::from_str_radix(text.strip_prefix("0x").unwrap_or(&text), 16)
+                                u8::from_str_radix(text.strip_prefix("0x").unwrap_or(&text), radix)
                                     .expect("Could not parse size")
                         }
                         _ => (),

@@ -1,6 +1,6 @@
 
 /*
- * {description}
+   {description}
  */
 typedef struct {{
 {registers}
