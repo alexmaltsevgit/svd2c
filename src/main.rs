@@ -322,7 +322,7 @@ impl Writer {
             };
 
             let offset = field.bit_offset.to_string();
-            let width = format!("0x{:x}", field.bit_width);
+            let width = format!("0x{:x}", (1u64 << field.bit_width) - 1);
 
             let enum_values =
                 self.make_enum_values(group_name, register_name, &field.name, &field.enum_values);

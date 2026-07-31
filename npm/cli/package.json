@@ -1,6 +1,6 @@
 {
   "name": "svd2c",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Generate C-header files from SVD",
   "homepage": "https://github.com/alexmaltsevgit/svd2c",
   "keywords": [
@@ -28,9 +28,9 @@
     "bin"
   ],
   "optionalDependencies": {
-    "svd2c-darwin-arm64": "0.1.6",
-    "svd2c-darwin-x64": "0.1.6",
-    "svd2c-linux-x64": "0.1.6",
-    "svd2c-win32-x64": "0.1.6"
+    "svd2c-darwin-arm64": "0.1.7",
+    "svd2c-darwin-x64": "0.1.7",
+    "svd2c-linux-x64": "0.1.7",
+    "svd2c-win32-x64": "0.1.7"
   }
 }
