@@ -1,7 +1,7 @@
 use std::{
     collections::{HashMap, HashSet},
     env,
-    fs::File,
+    fs::{self, File},
     io::{BufWriter, Write},
     path::Path,
 };
@@ -65,34 +65,32 @@ enum TranspilerContext {
 struct Writer {
     output: BufWriter<File>,
     ready_groups: HashSet<String>,
-    templates_cache: HashMap<String, String>,
 }
 
 impl Writer {
-    fn open(path: &str) -> Self {
-        Self {
+    fn open(path: &str) -> std::io::Result<Self> {
+        let path = Path::new(path);
+
+        if let Some(parent) = path.parent() {
+            fs::create_dir_all(parent)?;
+        }
+
+        Ok(Self {
             output: BufWriter::new(
-                File::create(path)
-                    .expect(format!("Error on opening file for output: {}", path).as_str()),
+                File::create(path).expect(
+                    format!(
+                        "Error on opening file for output: {}",
+                        path.to_string_lossy()
+                    )
+                    .as_str(),
+                ),
             ),
             ready_groups: HashSet::new(),
-            templates_cache: HashMap::new(),
-        }
-    }
-
-    fn load_template(&mut self, name: &str) -> String {
-        match self.templates_cache.get(name) {
-            Some(t) => t.clone(),
-            None => {
-                let t = std::fs::read_to_string(format!("templates/{}", name))
-                    .expect("Error on reading template");
-                t
-            }
-        }
+        })
     }
 
     fn w_opening(&mut self, device_name: &str) {
-        let t = self.load_template("opening.h");
+        let t = include_str!("../templates/opening.h");
 
         self.output
             .write_all(&t.replace("{name}", device_name).into_bytes())
@@ -113,7 +111,7 @@ impl Writer {
     }
 
     fn w_new_peripheral(&mut self, peripheral: &Peripheral) {
-        let t = self.load_template("new_peripheral.h");
+        let t = include_str!("../templates/new_peripheral.h");
 
         let registers = self.make_registers(&peripheral.registers);
 
@@ -155,7 +153,7 @@ impl Writer {
     }
 
     fn w_existing_peripheral(&mut self, peripheral: &Peripheral) {
-        let t = self.load_template("existing_peripheral.h");
+        let t = include_str!("../templates/existing_peripheral.h");
 
         let mut vars = HashMap::new();
         vars.insert("name".to_string(), peripheral.name.as_str());
@@ -171,8 +169,8 @@ impl Writer {
     }
 
     fn make_registers(&mut self, registers: &[Register]) -> String {
-        let t = self.load_template("register.h");
-        let mut out = String::with_capacity(t.capacity() * registers.len());
+        let t = include_str!("../templates/register.h");
+        let mut out = String::with_capacity(registers.len() * 64);
 
         let mut fillers: Vec<(isize, u32)> = Vec::new();
 
@@ -248,8 +246,8 @@ impl Writer {
         field_name: &str,
         enum_values: &[EnumValue],
     ) -> String {
-        let t = self.load_template("enumerated_value.h");
-        let mut out = String::with_capacity(t.capacity() * enum_values.len());
+        let t = include_str!("../templates/enumerated_value.h");
+        let mut out = String::with_capacity(enum_values.len() * 64);
 
         for v in enum_values {
             let value_str = format!("0x{:x}", v.value);
@@ -271,11 +269,14 @@ impl Writer {
     fn buff_register_filler(&mut self, out: &mut String, size_bits: &str, n: &str, count: u32) {
         let count_string = count.to_string();
 
-        let t = self.load_template(if count == 1 {
-            "reserved_one.h"
+        let reserved_one_t = include_str!("../templates/reserved_one.h");
+        let reserved_many_t = include_str!("../templates/reserved_many.h");
+
+        let t = if count == 1 {
+            reserved_one_t
         } else {
-            "reserved_many.h"
-        });
+            reserved_many_t
+        };
 
         let mut vars = HashMap::new();
         vars.insert("size_bits".to_string(), size_bits);
@@ -286,8 +287,8 @@ impl Writer {
     }
 
     fn w_asserts(&mut self, group_name: &str, registers: &[Register]) {
-        let t = self.load_template("assert.h");
-        let mut out = String::with_capacity(t.capacity() * registers.len());
+        let t = include_str!("../templates/assert.h");
+        let mut out = String::with_capacity(registers.len() * 64);
 
         for reg in registers.iter() {
             if let Some(_) = reg.alternate_register {
@@ -310,12 +311,15 @@ impl Writer {
     fn make_fields(&mut self, group_name: &str, register_name: &str, fields: &[Field]) -> String {
         let mut out = String::with_capacity(fields.len() * 64);
 
+        let reserved_one_t = include_str!("../templates/field.h");
+        let reserved_many_t = include_str!("../templates/field_enumerated.h");
+
         for field in fields.iter() {
-            let t = self.load_template(if field.enum_values.is_empty() {
-                "field.h"
+            let t = if field.enum_values.is_empty() {
+                reserved_one_t
             } else {
-                "field_enumerated.h"
-            });
+                reserved_many_t
+            };
 
             let offset = field.bit_offset.to_string();
             let width = format!("0x{:x}", field.bit_width);
@@ -339,9 +343,9 @@ impl Writer {
     }
 
     fn w_ending(&mut self) {
-        let t = self.load_template("ending.h");
+        let t = include_str!("../templates/ending.h");
 
-        self.output.write_all(&t.into_bytes()).expect("Write error");
+        self.output.write_all(t.as_bytes()).expect("Write error");
     }
 }
 
@@ -440,7 +444,7 @@ impl Parser {
     }
 }
 
-fn main() {
+fn main() -> std::io::Result<()> {
     let args: Vec<String> = env::args().collect();
 
     let input_file_path = args
@@ -457,7 +461,7 @@ fn main() {
     let default_output_filename = &format!("{}.h", input_filename.to_lowercase());
     let output_file_path = args.get(2).unwrap_or(default_output_filename).as_str();
 
-    let mut writer = Writer::open(output_file_path);
+    let mut writer = Writer::open(output_file_path)?;
 
     let mut reader = Reader::from_file(input_file_path)
         .expect(format!("Error on opening file for input: {}", input_file_path).as_str());
@@ -742,4 +746,6 @@ fn main() {
             _ => (),
         }
     }
+
+    return Ok(());
 }
